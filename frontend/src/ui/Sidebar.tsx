@@ -5,7 +5,7 @@ import NavLinks from "./NavLinks";
 import Title from "./Title";
 import Button from "./Button";
 
-const StyledSidebar = styled.div`
+const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   background-color: var(--color-indigo-900);
