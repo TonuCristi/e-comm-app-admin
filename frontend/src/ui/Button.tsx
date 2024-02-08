@@ -3,10 +3,11 @@ import styled, { css } from "styled-components";
 
 type Props = {
   children: ReactNode;
-  variant: "regular";
+  variant: "regular" | "operation";
+  onClick?: () => void;
 };
 
-type VariantProps = { $variant: "regular" };
+type VariantProps = { $variant: "regular" | "operation" };
 
 const variants = {
   regular: css`
@@ -17,7 +18,18 @@ const variants = {
     font-weight: 500;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
+  `,
+  operation: css`
+    background-color: var(--color-indigo-50);
+    color: var(--color-indigo-700);
+    border-radius: 100%;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   `,
 };
 
@@ -32,6 +44,10 @@ const StyledButton = styled.button<VariantProps>`
   ${(props) => variants[props.$variant]}
 `;
 
-export default function Button({ children, variant }: Props) {
-  return <StyledButton $variant={variant}>{children}</StyledButton>;
+export default function Button({ children, variant, onClick }: Props) {
+  return (
+    <StyledButton onClick={onClick} $variant={variant}>
+      {children}
+    </StyledButton>
+  );
 }

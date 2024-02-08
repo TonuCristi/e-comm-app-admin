@@ -8,7 +8,7 @@ type Props = {
 
 const StyledTableHeader = styled.div`
   display: grid;
-  grid-template-columns: 5fr 15fr 20fr 15fr 20fr 25fr;
+  grid-template-columns: 5fr 15fr 15fr 15fr 15fr 25fr 5fr 5fr;
   border-bottom: 3px solid var(--color-indigo-50);
 `;
 

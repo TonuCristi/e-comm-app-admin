@@ -1,4 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import RootLayout from "./ui/RootLayout";
 import Dashboard from "./pages/Dashboard";
@@ -9,8 +11,6 @@ import PageNotFound from "./pages/PageNotFound";
 import Orders from "./pages/Orders";
 
 import GlobalStyles from "./styles/GlobalStyles";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createBrowserRouter([
   {
@@ -25,12 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/buildings",
         element: <Buildings />,
-        children: [
-          {
-            path: "/buildings/:buildingId",
-            element: <Building />,
-          },
-        ],
+      },
+      {
+        path: "/buildings/:buildingId",
+        element: <Building />,
       },
       {
         path: "/orders",

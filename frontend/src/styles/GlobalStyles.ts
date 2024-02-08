@@ -36,6 +36,7 @@ const GlobalStyles = createGlobalStyle`
         font-size: 1.6rem;
         color: var(--color-indigo-50);
         background-color: var(--color-indigo-950);
+        /* overflow: hidden; */
     }
 `;
 
