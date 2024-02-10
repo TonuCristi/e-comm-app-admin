@@ -6,10 +6,9 @@ type Props = {
 };
 
 const StyledField = styled.div`
-  border-right: 3px solid var(--color-indigo-50);
+  border-right: 3px solid var(--color-indigo-300);
   padding: 0.8rem;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
 
   &:last-child {

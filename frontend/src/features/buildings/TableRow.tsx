@@ -2,21 +2,21 @@ import styled from "styled-components";
 import { HiArrowSmallRight, HiMiniXMark } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 
-import Field from "./Field";
+import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 
-import { useDeleteBuilding } from "./useDeleteBuilding";
-import { Building } from "../../pages/Buildings";
+import { BuildingWithId } from "../../context/BuildingsContext";
 
 type Props = {
   nr: number;
-  building: Building;
+  building: BuildingWithId;
+  onDelete: (id: string) => void;
 };
 
 const StyledTableRow = styled.div`
   display: grid;
-  grid-template-columns: 5fr 15fr 15fr 15fr 15fr 25fr 5fr 5fr;
-  border-bottom: 3px solid var(--color-indigo-50);
+  grid-template-columns: 5fr 25fr 15fr 15fr 15fr 15fr 5fr 5fr;
+  border-bottom: 3px solid var(--color-indigo-300);
 
   &:last-child {
     border-bottom: none;
@@ -51,29 +51,27 @@ const ToBuildingIcon = styled(HiArrowSmallRight)`
   stroke-width: 1;
 `;
 
-export default function TableRow({ nr, building }: Props) {
-  const { _id, type, selling_price, square_meters, location, address } =
-    building;
-  const { removeBuilding } = useDeleteBuilding();
+export default function TableRow({ nr, building, onDelete }: Props) {
+  const { _id, type, selling_price, square_meters, location } = building;
 
   return (
     <StyledTableRow>
       <Field>{nr}</Field>
+      <Field>{_id}</Field>
       <Field>{type.slice(0, 1).toUpperCase() + type.slice(1)}</Field>
       <Field>
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(selling_price)}
+        }).format(+selling_price)}
       </Field>
       <Field>
         {square_meters} m<sup>2</sup>
       </Field>
       <Field>{location}</Field>
-      <Field>{address}</Field>
       <Field>
         <Wrapper>
-          <Button onClick={() => removeBuilding(_id)} variant="operation">
+          <Button onClick={() => onDelete(_id)} variant="operation">
             <RemoveIcon />
           </Button>
         </Wrapper>

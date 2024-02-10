@@ -43,12 +43,12 @@ function checkField(req, res, field) {
   }
 }
 
-// Route for Save a new build
+// Route for Save a new building
 router.post("/", async (req, res) => {
   try {
     fields.forEach((field) => checkField(req, res, field));
 
-    const newBuild = {
+    const newBuilding = {
       type: req.body.type,
       location: req.body.location,
       address: req.body.address,
@@ -64,42 +64,44 @@ router.post("/", async (req, res) => {
       discount_value: req.body.discount_value,
     };
 
-    const build = await Building.create(newBuild);
+    const building = await Building.create(newBuilding);
 
-    return res.status(201).send(build);
+    const buildings = await Building.find({});
+
+    return res.status(201).send(buildings);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 });
 
-// Route to Get all builds form database
+// Route to Get all buildings form database
 router.get("/", async (req, res) => {
   try {
-    const builds = await Building.find({});
+    const buildings = await Building.find({});
 
-    return res.status(200).json(builds);
+    return res.status(200).json(buildings);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 });
 
-// Route to Get one build form database by id
+// Route to Get one building form database by id
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const build = await Building.findById(id);
+    const building = await Building.findById(id);
 
-    return res.status(200).json(build);
+    return res.status(200).json(building);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 });
 
-// Route for Update a build
+// Route for Update a building
 router.put("/:id", async (req, res) => {
   try {
     fields.forEach((field) => checkField(req, res, field));
@@ -109,17 +111,17 @@ router.put("/:id", async (req, res) => {
     const result = await Building.findByIdAndUpdate(id, req.body);
 
     if (!result) {
-      return res.status(404).send({ message: "Build not found!" });
+      return res.status(404).send({ message: "Building not found!" });
     }
 
-    return res.status(200).send({ message: "Build updated succesfully!" });
+    return res.status(200).send({ message: "Building updated succesfully!" });
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });
   }
 });
 
-// Route for Delete a build
+// Route for Delete a building
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -127,10 +129,12 @@ router.delete("/:id", async (req, res) => {
     const result = await Building.findByIdAndDelete(id);
 
     if (!result) {
-      return res.status(404).send({ message: "Build not found!" });
+      return res.status(404).send({ message: "Building not found!" });
     }
 
-    return res.status(200).send({ message: "Build deleted succesfully!" });
+    const buildings = await Building.find({});
+
+    return res.status(200).json(buildings);
   } catch (error) {
     console.log(err.message);
     res.status(500).send(err.message);

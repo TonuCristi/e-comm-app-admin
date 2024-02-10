@@ -34,9 +34,8 @@ const GlobalStyles = createGlobalStyle`
         line-height: 1;
         font-weight: 400;
         font-size: 1.6rem;
-        color: var(--color-indigo-50);
+        color: var(--color-indigo-100);
         background-color: var(--color-indigo-950);
-        /* overflow: hidden; */
     }
 `;
 

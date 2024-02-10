@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Avatar from "./Avatar";
 
 const StyledHeader = styled.header`
-  margin-bottom: 3.2rem;
+  padding: 3.2rem 4.8rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

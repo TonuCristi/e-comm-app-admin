@@ -6,6 +6,7 @@ import Title from "./Title";
 import Button from "./Button";
 
 const StyledSidebar = styled.aside`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--color-indigo-900);

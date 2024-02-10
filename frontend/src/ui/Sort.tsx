@@ -1,28 +1,14 @@
 import { ChangeEvent } from "react";
 import { useSearchParams } from "react-router-dom";
-import styled from "styled-components";
+
+import Select from "./Select";
 
 type Props = {
   sortTypes: object[];
+  defaultValue: string;
 };
 
-const Select = styled.select`
-  font-size: 1.6rem;
-  font-weight: 500;
-  padding: 1.2rem;
-  outline: none;
-  color: var(--color-indigo-50);
-  border: 3px solid var(--color-indigo-50);
-  background: none;
-  border-radius: 1.1rem;
-
-  & option {
-    color: var(--color-indigo-900);
-    padding: 1.2rem;
-  }
-`;
-
-export default function Sort({ sortTypes }: Props) {
+export default function Sort({ sortTypes, defaultValue }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
@@ -31,7 +17,7 @@ export default function Sort({ sortTypes }: Props) {
   }
 
   return (
-    <Select defaultValue="ascending" onChange={handleChange}>
+    <Select defaultValue={defaultValue} onChange={handleChange}>
       {sortTypes.map((type) => {
         const [key, value] = Object.entries(type)[0];
         return (

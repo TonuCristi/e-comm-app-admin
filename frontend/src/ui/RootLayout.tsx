@@ -8,24 +8,18 @@ const StyledRootLayout = styled.div`
   display: grid;
   grid-template-columns: 25rem 1fr;
   grid-template-rows: 1fr;
-  height: 100vh;
   width: 100%;
 `;
 
 const Container = styled.div`
-  padding: 3.2rem 4.8rem;
-  height: 100%;
+  height: 100vh;
   width: 100%;
-`;
-
-const Wrapper = styled.div`
-  overflow: hidden;
-  height: 100%;
 `;
 
 const Main = styled.main`
-  height: 100%;
-  width: 100%;
+  padding: 3.2rem 4.8rem;
+  width: 95%;
+  margin: 0 auto;
 `;
 
 export default function RootLayout() {
@@ -34,13 +28,11 @@ export default function RootLayout() {
       <Sidebar />
 
       <Container>
-        <Wrapper>
-          <Header />
+        <Header />
 
-          <Main>
-            <Outlet />
-          </Main>
-        </Wrapper>
+        <Main>
+          <Outlet />
+        </Main>
       </Container>
     </StyledRootLayout>
   );

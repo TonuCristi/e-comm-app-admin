@@ -6,6 +6,12 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import AddBuildingForm from "./AddBuildingForm";
 
+import { Building } from "../../context/BuildingsContext";
+
+type Props = {
+  onBuildingAdd: (newBuilding: Building) => void;
+};
+
 const StyledAddBuildingButton = styled.div``;
 
 const AddBuildingIcon = styled(HiMiniPlusSmall)`
@@ -13,7 +19,7 @@ const AddBuildingIcon = styled(HiMiniPlusSmall)`
   stroke-width: 1;
 `;
 
-export default function AddBuildingButton() {
+export default function AddBuildingButton({ onBuildingAdd }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleClick() {
@@ -26,7 +32,10 @@ export default function AddBuildingButton() {
         <AddBuildingIcon />
       </Button>
       {isOpen &&
-        createPortal(<AddBuildingForm onClick={handleClick} />, document.body)}
+        createPortal(
+          <AddBuildingForm onClick={handleClick} onAdd={onBuildingAdd} />,
+          document.body
+        )}
     </StyledAddBuildingButton>
   );
 }

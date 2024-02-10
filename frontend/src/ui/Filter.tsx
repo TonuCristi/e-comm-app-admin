@@ -1,10 +1,12 @@
 import { ChangeEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import Select from "./Select";
 
 type Props = {
   filters: object[];
   filter: string;
+  defaultValue: string;
 };
 
 const StyledFilter = styled.div`
@@ -15,24 +17,7 @@ const StyledFilter = styled.div`
 
 const FilterName = styled.div``;
 
-const Select = styled.select`
-  font-size: 1.6rem;
-  font-weight: 500;
-  padding: 1.2rem;
-  outline: none;
-  color: var(--color-indigo-50);
-  border: 3px solid var(--color-indigo-50);
-  background: none;
-  border-radius: 1.1rem;
-  text-transform: capitalize;
-
-  & option {
-    color: var(--color-indigo-900);
-    padding: 1.2rem;
-  }
-`;
-
-export default function Filter({ filters, filter }: Props) {
+export default function Filter({ filters, filter, defaultValue }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const filterTypes = filters ? [{ all: "All" }, ...filters] : null;
 
@@ -46,7 +31,7 @@ export default function Filter({ filters, filter }: Props) {
       <FilterName>
         {filter.slice(0, 1).toUpperCase() + filter.slice(1)}:
       </FilterName>
-      <Select defaultValue="ascending" onChange={handleChange}>
+      <Select defaultValue={defaultValue} onChange={handleChange}>
         {filterTypes?.map((type) => {
           const [key, value] = Object.entries(type)[0];
           return (

@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { HiMiniXMark } from "react-icons/hi2";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
 
+import { Building } from "../../context/BuildingsContext";
+
 type Props = {
   onClick: () => void;
+  onAdd: (newBuilding: Building) => void;
 };
 
 const Overlay = styled.div`
@@ -93,7 +96,7 @@ const ButtonWrapper = styled.div`
   right: 2rem;
 `;
 
-export default function AddBuildingForm({ onClick }: Props) {
+export default function AddBuildingForm({ onClick, onAdd }: Props) {
   const { register, handleSubmit } = useForm({
     defaultValues: {
       type: "",
@@ -111,7 +114,7 @@ export default function AddBuildingForm({ onClick }: Props) {
       description: "",
     },
   });
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<Building> = (data) => {
     const { selling_price, original_price, square_meters, nr_floors } = data;
 
     if (
@@ -122,7 +125,8 @@ export default function AddBuildingForm({ onClick }: Props) {
     )
       return;
 
-    console.log(data);
+    onAdd(data);
+    onClick();
   };
 
   return (
@@ -149,6 +153,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               {...register("address", { required: true })}
             />
             <Input
+              type="number"
               placeholder="Selling price"
               {...register("selling_price", {
                 required: true,
@@ -156,6 +161,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Original price"
               {...register("original_price", {
                 required: true,
@@ -163,6 +169,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Square meters"
               {...register("square_meters", {
                 required: true,
@@ -170,6 +177,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Number of floors"
               {...register("nr_floors", {
                 required: true,
@@ -177,10 +185,12 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Number of rooms"
               {...register("nr_rooms", { required: true, valueAsNumber: true })}
             />
             <Input
+              type="number"
               placeholder="Number of bathrooms"
               {...register("nr_bathrooms", {
                 required: true,
@@ -188,6 +198,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Number of garages"
               {...register("nr_garages", {
                 required: true,
@@ -195,6 +206,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Number of balconies"
               {...register("nr_balconies", {
                 required: true,
@@ -202,6 +214,7 @@ export default function AddBuildingForm({ onClick }: Props) {
               })}
             />
             <Input
+              type="number"
               placeholder="Discount value"
               {...register("discount_value", {
                 required: true,
