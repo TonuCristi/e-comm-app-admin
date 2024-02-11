@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 import Table from "../features/buildings/Table";
 import Sort from "../ui/Sort";
@@ -7,8 +7,9 @@ import Filter from "../ui/Filter";
 import AddBuildingButton from "../features/buildings/AddBuildingButton";
 import Pagination from "../ui/Pagination";
 
-import { Building, BuildingsContext } from "../context/BuildingsContext";
+import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
+import { Building, BuildingWithoutId } from "../lib/types";
 
 const sortTypes = [
   {
@@ -58,29 +59,15 @@ export default function Buildings() {
       .finally(() => setIsLoading(false));
   }, [setBuildings, setIsLoading, setError]);
 
-  const locationFilter = useMemo(
-    () =>
+  const fieldFilter = useCallback(
+    (field: "location" | "type") =>
       buildings
-        ?.map((building: Building) => building.location)
+        ?.map((building: Building) => building[field])
         .filter(
-          (location: string, i: number, arr: string[]) =>
-            arr.indexOf(location) === i
+          (item: string, i: number, arr: string[]) => arr.indexOf(item) === i
         )
-        .map((location: string) => {
-          return { [location.toLowerCase()]: location };
-        }),
-    [buildings]
-  );
-
-  const typeFilter = useMemo(
-    () =>
-      buildings
-        ?.map((building: Building) => building.type)
-        .filter(
-          (type: string, i: number, arr: string[]) => arr.indexOf(type) === i
-        )
-        .map((type: string) => {
-          return { [type.toLowerCase()]: type };
+        .map((item: string) => {
+          return { [item.toLowerCase()]: item };
         }),
     [buildings]
   );
@@ -89,7 +76,7 @@ export default function Buildings() {
     BuildingsApi.deleteBuilding(id).then((data) => setBuildings(data));
   };
 
-  const handleAdd = (newBuilding: Building) => {
+  const handleAdd = (newBuilding: BuildingWithoutId) => {
     BuildingsApi.addBuilding(newBuilding).then((data) => setBuildings(data));
   };
 
@@ -104,10 +91,14 @@ export default function Buildings() {
           <ButtonWrapper>
             <AddBuildingButton onBuildingAdd={handleAdd} />
           </ButtonWrapper>
-          <Filter defaultValue="all" filters={typeFilter} filter="type" />
           <Filter
             defaultValue="all"
-            filters={locationFilter}
+            filters={fieldFilter("type")}
+            filter="type"
+          />
+          <Filter
+            defaultValue="all"
+            filters={fieldFilter("location")}
             filter="location"
           />
           <Sort defaultValue="ascending" sortTypes={sortTypes} />

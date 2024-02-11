@@ -6,33 +6,15 @@ import {
   useState,
 } from "react";
 
-export interface Building {
-  type: string;
-  location: string;
-  address: string;
-  selling_price: number | string;
-  discount_value: number | string;
-  nr_balconies: number | string;
-  nr_bathrooms: number | string;
-  nr_floors: number | string;
-  nr_garages: number | string;
-  nr_rooms: number | string;
-  original_price: number | string;
-  square_meters: number | string;
-  description: string;
-}
-
-export interface BuildingWithId extends Building {
-  _id: string;
-}
+import { Building } from "../lib/types";
 
 interface BuildingsContext {
-  buildings: BuildingWithId[];
+  buildings: Building[];
   isLoading: boolean;
   error: string;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<string>>;
-  setBuildings: Dispatch<SetStateAction<BuildingWithId[]>>;
+  setBuildings: Dispatch<SetStateAction<Building[]>>;
 }
 
 export const BuildingsContext = createContext<BuildingsContext>({
@@ -51,7 +33,7 @@ export default function BuildingsProvider({
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [buildings, setBuildings] = useState<BuildingWithId[]>([]);
+  const [buildings, setBuildings] = useState<Building[]>([]);
 
   return (
     <BuildingsContext.Provider

@@ -4,11 +4,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
 
-import { Building } from "../../context/BuildingsContext";
+import { BuildingWithoutId } from "../../lib/types";
 
 type Props = {
   onClick: () => void;
-  onAdd: (newBuilding: Building) => void;
+  onAdd: (newBuilding: BuildingWithoutId) => void;
 };
 
 const Overlay = styled.div`
@@ -114,7 +114,7 @@ export default function AddBuildingForm({ onClick, onAdd }: Props) {
       description: "",
     },
   });
-  const onSubmit: SubmitHandler<Building> = (data) => {
+  const onSubmit: SubmitHandler<BuildingWithoutId> = (data) => {
     const { selling_price, original_price, square_meters, nr_floors } = data;
 
     if (
