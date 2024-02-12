@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Table from "../features/buildings/Table";
 import Sort from "../ui/Sort";
 import Filter from "../ui/Filter";
 import AddBuildingButton from "../features/buildings/AddBuildingButton";
 import Pagination from "../ui/Pagination";
+import TableHeader from "../ui/TableHeader";
+import TableRow from "../features/buildings/TableRow";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
 import { Building, BuildingWithoutId } from "../lib/types";
-import TableHeader from "../ui/TableHeader";
-import TableRow from "../features/buildings/TableRow";
 
 const sortTypes = [
   {
@@ -58,6 +58,7 @@ export default function Buildings() {
   const { buildings, isLoading, error, setIsLoading, setError, setBuildings } =
     useContext(BuildingsContext);
   const [pageNr, setPageNr] = useState<number>(0);
+
   const buildingsPerPage = 9;
   const buildingsCount = buildings.length;
 
@@ -71,19 +72,6 @@ export default function Buildings() {
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, [setBuildings, setIsLoading, setError]);
-
-  const fieldFilter = useCallback(
-    (field: "location" | "type") =>
-      buildings
-        ?.map((building: Building) => building[field].toLowerCase())
-        .filter(
-          (item: string, i: number, arr: string[]) => arr.indexOf(item) === i
-        )
-        .map((item: string) => {
-          return { [item.toLowerCase()]: item };
-        }),
-    [buildings]
-  );
 
   const handleDelete = (id: string) => {
     BuildingsApi.deleteBuilding(id).then((data) => setBuildings(data));
@@ -110,16 +98,8 @@ export default function Buildings() {
           <ButtonWrapper>
             <AddBuildingButton onBuildingAdd={handleAdd} />
           </ButtonWrapper>
-          <Filter
-            defaultValue="all"
-            filters={fieldFilter("type")}
-            filter="type"
-          />
-          <Filter
-            defaultValue="all"
-            filters={fieldFilter("location")}
-            filter="location"
-          />
+          <Filter defaultValue="all" buildings={buildings} filter="type" />
+          <Filter defaultValue="all" buildings={buildings} filter="location" />
           <Sort defaultValue="ascending" sortTypes={sortTypes} />
         </Controls>
       </Wrapper>

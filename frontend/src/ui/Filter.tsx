@@ -1,12 +1,15 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+
 import Select from "./Select";
 
+import { Building } from "../lib/types";
+
 type Props = {
-  filters: object[];
-  filter: string;
+  filter: "location" | "type";
   defaultValue: string;
+  buildings: Building[];
 };
 
 const StyledFilter = styled.div`
@@ -15,11 +18,29 @@ const StyledFilter = styled.div`
   gap: 0.8rem;
 `;
 
-const FilterName = styled.div``;
+const FilterName = styled.div`
+  font-weight: 500;
+`;
 
-export default function Filter({ filters, filter, defaultValue }: Props) {
+export default function Filter({ filter, defaultValue, buildings }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const filterTypes = filters ? [{ all: "All" }, ...filters] : null;
+
+  const filters = useCallback(
+    (field: "location" | "type") =>
+      buildings
+        ?.map((building: Building) => building[field].toLowerCase())
+        .filter(
+          (item: string, i: number, arr: string[]) => arr.indexOf(item) === i
+        )
+        .map((item: string) => {
+          return { [item.toLowerCase()]: item };
+        }),
+    [buildings]
+  );
+
+  const filterTypes = filters(filter)
+    ? [{ all: "All" }, ...filters(filter)]
+    : null;
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
     searchParams.set(filter, e.target.value);
