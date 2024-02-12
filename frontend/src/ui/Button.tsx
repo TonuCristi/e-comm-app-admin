@@ -1,13 +1,15 @@
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
+type Variant = "regular" | "operation";
+
 type Props = {
   children: ReactNode;
-  variant: "regular" | "operation";
+  variant: Variant;
   onClick?: () => void;
 };
 
-type VariantProps = { $variant: "regular" | "operation" };
+type VariantProps = { $variant: Variant };
 
 const variants = {
   regular: css`
@@ -20,6 +22,7 @@ const variants = {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
+    text-transform: capitalize;
   `,
   operation: css`
     background-color: var(--color-indigo-50);

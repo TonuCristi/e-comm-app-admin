@@ -114,7 +114,9 @@ router.put("/:id", async (req, res) => {
       return res.status(404).send({ message: "Building not found!" });
     }
 
-    return res.status(200).send({ message: "Building updated succesfully!" });
+    const buildings = await Building.find({});
+
+    return res.status(200).json(buildings);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ message: err.message });

@@ -10,6 +10,8 @@ import Pagination from "../ui/Pagination";
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
 import { Building, BuildingWithoutId } from "../lib/types";
+import TableHeader from "../ui/TableHeader";
+import TableRow from "../features/buildings/TableRow";
 
 const sortTypes = [
   {
@@ -24,6 +26,17 @@ const sortTypes = [
   {
     "area-desc": "Area descending",
   },
+];
+
+const fields = [
+  "Nr.",
+  "Id",
+  "Type",
+  "Selling Price",
+  "Discount",
+  "Area",
+  "Location",
+  "",
 ];
 
 const StyledBuildings = styled.div``;
@@ -62,7 +75,7 @@ export default function Buildings() {
   const fieldFilter = useCallback(
     (field: "location" | "type") =>
       buildings
-        ?.map((building: Building) => building[field])
+        ?.map((building: Building) => building[field].toLowerCase())
         .filter(
           (item: string, i: number, arr: string[]) => arr.indexOf(item) === i
         )
@@ -78,6 +91,12 @@ export default function Buildings() {
 
   const handleAdd = (newBuilding: BuildingWithoutId) => {
     BuildingsApi.addBuilding(newBuilding).then((data) => setBuildings(data));
+  };
+
+  const handleUpdate = (id: string, building: BuildingWithoutId) => {
+    BuildingsApi.updateBuilding(id, building).then((data) =>
+      setBuildings(data)
+    );
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -105,15 +124,21 @@ export default function Buildings() {
         </Controls>
       </Wrapper>
 
-      <Table
-        buildings={buildings.slice(
-          pageNr * buildingsPerPage,
-          buildingsPerPage * (pageNr + 1)
-        )}
-        buildingsPerPage={buildingsPerPage}
-        pageNr={pageNr}
-        onBuildingDelete={handleDelete}
-      />
+      <Table>
+        <TableHeader variant="buildings" fields={fields} />
+        {buildings
+          .slice(pageNr * buildingsPerPage, buildingsPerPage * (pageNr + 1))
+          .map((building: Building, i: number) => (
+            <TableRow
+              key={building._id}
+              nr={pageNr * buildingsPerPage + i + 1}
+              building={building}
+              onBuildingDelete={handleDelete}
+              onBuildingUpdate={handleUpdate}
+            />
+          ))}
+      </Table>
+
       <Pagination
         pageNr={pageNr}
         setPageNr={setPageNr}

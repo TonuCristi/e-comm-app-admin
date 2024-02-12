@@ -1,23 +1,27 @@
 import { AxiosResponse } from "axios";
 import api from "../config/api";
-
-import { Building, BuildingWithId } from "../context/BuildingsContext";
+import { Building, BuildingWithoutId } from "../lib/types";
 
 const BuildingsApi = {
   getBuildings() {
     return api
       .get("/buildings")
-      .then(({ data }: AxiosResponse<BuildingWithId[]>) => data);
+      .then(({ data }: AxiosResponse<Building[]>) => data);
   },
   deleteBuilding(id: string) {
     return api
       .delete(`/buildings/${id}`)
-      .then(({ data }: AxiosResponse<BuildingWithId[]>) => data);
+      .then(({ data }: AxiosResponse<Building[]>) => data);
   },
-  addBuilding(newBuilding: Building) {
+  addBuilding(newBuilding: BuildingWithoutId) {
     return api
       .post("/buildings", { ...newBuilding })
-      .then(({ data }: AxiosResponse<BuildingWithId[]>) => data);
+      .then(({ data }: AxiosResponse<Building[]>) => data);
+  },
+  updateBuilding(id: string, newBuilding: BuildingWithoutId) {
+    return api
+      .put(`/buildings/${id}`, { ...newBuilding })
+      .then(({ data }: AxiosResponse<Building[]>) => data);
   },
 };
 

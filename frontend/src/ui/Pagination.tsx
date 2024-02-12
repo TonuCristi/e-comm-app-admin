@@ -54,16 +54,6 @@ export default function Pagination({
 }: Props) {
   const maxPage: number = Math.ceil(dataCount / dataPerPage);
 
-  const getLeftLimit = () => {
-    if (pageNr >= maxPage - 3) return maxPage - 3;
-    return pageNr <= 2 ? 0 : pageNr;
-  };
-
-  const getRightLimit = () => {
-    if (pageNr >= maxPage - 3) return maxPage;
-    return pageNr <= 2 ? 3 : pageNr + 3;
-  };
-
   const pages = useCallback(() => {
     const pagesArr = [];
 
@@ -73,6 +63,18 @@ export default function Pagination({
 
     return pagesArr;
   }, [maxPage]);
+
+  const getLeftLimit = () => {
+    if (pageNr <= 2) return 0;
+    if (pageNr >= maxPage - 3) return maxPage - 3;
+    return pageNr;
+  };
+
+  const getRightLimit = () => {
+    if (pageNr <= 2) return 3;
+    if (pageNr > 2 && pageNr < maxPage - 3) return pageNr + 3;
+    return maxPage;
+  };
 
   return (
     <StyledPagination>
@@ -99,7 +101,7 @@ export default function Pagination({
             <Page
               key={page}
               $variant={page === pageNr + 1 ? "current" : "regular"}
-              onClick={() => setPageNr(page)}
+              onClick={() => setPageNr(page - 1)}
             >
               {page}
             </Page>

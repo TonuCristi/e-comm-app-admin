@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { HiMiniPlusSmall } from "react-icons/hi2";
 import styled from "styled-components";
+import { HiMiniArrowSmallDown } from "react-icons/hi2";
 
 import Button from "../../ui/Button";
 import BuildingForm from "./BuildingForm";
@@ -9,17 +9,19 @@ import BuildingForm from "./BuildingForm";
 import { BuildingWithoutId } from "../../lib/types";
 
 type Props = {
-  onBuildingAdd: (newBuilding: BuildingWithoutId) => void;
+  id: string;
+  onUpdate: (id: string, building: BuildingWithoutId) => void;
+  building: BuildingWithoutId;
 };
 
-const StyledAddBuildingButton = styled.div``;
+const StyledEditBuildingButton = styled.div``;
 
-const Icon = styled(HiMiniPlusSmall)`
-  font-size: 2.8rem;
+const Icon = styled(HiMiniArrowSmallDown)`
+  font-size: 2.4rem;
   stroke-width: 1;
 `;
 
-export default function AddBuildingButton({ onBuildingAdd }: Props) {
+export default function EditBuildingButton({ id, onUpdate, building }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleClick() {
@@ -27,19 +29,21 @@ export default function AddBuildingButton({ onBuildingAdd }: Props) {
   }
 
   return (
-    <StyledAddBuildingButton>
+    <StyledEditBuildingButton>
       <Button onClick={handleClick} variant="operation">
         <Icon />
       </Button>
       {isOpen &&
         createPortal(
           <BuildingForm
-            title="add"
+            title="update"
             onClick={handleClick}
-            onAdd={onBuildingAdd}
+            id={id}
+            onUpdate={onUpdate}
+            building={building}
           />,
           document.body
         )}
-    </StyledAddBuildingButton>
+    </StyledEditBuildingButton>
   );
 }

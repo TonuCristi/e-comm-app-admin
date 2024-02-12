@@ -9,6 +9,7 @@ const StyledRootLayout = styled.div`
   grid-template-columns: 25rem 1fr;
   grid-template-rows: 1fr;
   width: 100%;
+  overflow: hidden;
 `;
 
 const Container = styled.div`
@@ -17,9 +18,10 @@ const Container = styled.div`
 `;
 
 const Main = styled.main`
+  height: 100%;
   padding: 3.2rem 4.8rem;
-  width: 95%;
-  margin: 0 auto;
+  width: 100%;
+  /* margin: 0 auto; */
 `;
 
 export default function RootLayout() {
