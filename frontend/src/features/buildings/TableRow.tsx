@@ -6,14 +6,7 @@ import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 
 import EditBuildingButton from "./EditBuildingButton";
-import { Building, BuildingWithoutId } from "../../lib/types";
-
-type Props = {
-  nr: number;
-  building: Building;
-  onBuildingDelete: (id: string) => void;
-  onBuildingUpdate: (id: string, building: BuildingWithoutId) => void;
-};
+import { Building, BuildingRequest } from "../../lib/types";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -62,19 +55,25 @@ const Discount = styled.div`
   border-radius: 0.5rem;
 `;
 
+type Props = {
+  nr: number;
+  building: Building;
+  onBuildingDelete: (id: string) => void;
+  onBuildingUpdate: (id: string, building: BuildingRequest) => void;
+};
+
 export default function TableRow({
   nr,
   building,
   onBuildingDelete,
   onBuildingUpdate,
 }: Props) {
-  const { _id, type, selling_price, square_meters, location, discount_value } =
-    building;
+  const { id, type, selling_price, area, location, discount_value } = building;
 
   return (
     <StyledTableRow>
       <Field>{nr}</Field>
-      <Field>{_id}</Field>
+      <Field>{id}</Field>
       <Field>{type.slice(0, 1).toUpperCase() + type.slice(1)}</Field>
 
       <Field>
@@ -93,14 +92,14 @@ export default function TableRow({
       </Field>
 
       <Field>
-        {square_meters} m<sup>2</sup>
+        {area} m<sup>2</sup>
       </Field>
 
       <Field>{location.slice(0, 1).toUpperCase() + location.slice(1)}</Field>
 
       <Field>
         <Wrapper>
-          <Button onClick={() => onBuildingDelete(_id)} variant="operation">
+          <Button onClick={() => onBuildingDelete(id)} variant="operation">
             <RemoveIcon />
           </Button>
         </Wrapper>
@@ -109,7 +108,7 @@ export default function TableRow({
       <Field>
         <Wrapper>
           <EditBuildingButton
-            id={_id}
+            id={id}
             onUpdate={onBuildingUpdate}
             building={building}
           />
@@ -118,7 +117,7 @@ export default function TableRow({
 
       <Field>
         <Wrapper>
-          <BuldingLink to={`/buildings/${_id}`}>
+          <BuldingLink to={`/buildings/${id}`}>
             <ToBuildingIcon />
           </BuldingLink>
         </Wrapper>

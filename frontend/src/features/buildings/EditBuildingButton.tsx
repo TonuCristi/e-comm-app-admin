@@ -6,11 +6,11 @@ import { HiMiniArrowSmallDown } from "react-icons/hi2";
 import Button from "../../ui/Button";
 import BuildingForm from "./BuildingForm";
 
-import { BuildingWithoutId } from "../../lib/types";
+import { BuildingRequest, BuildingWithoutId } from "../../lib/types";
 
 type Props = {
   id: string;
-  onUpdate: (id: string, building: BuildingWithoutId) => void;
+  onUpdate: (id: string, building: BuildingRequest) => void;
   building: BuildingWithoutId;
 };
 
@@ -40,7 +40,7 @@ export default function EditBuildingButton({ id, onUpdate, building }: Props) {
             onClick={handleClick}
             id={id}
             onUpdate={onUpdate}
-            building={building}
+            defaultValues={building}
           />,
           document.body
         )}

@@ -4,16 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
 
-import { BuildingWithoutId } from "../../lib/types";
-
-type Props = {
-  title: string;
-  id?: string;
-  onClick: () => void;
-  onAdd?: (building: BuildingWithoutId) => void;
-  onUpdate?: (id: string, building: BuildingWithoutId) => void;
-  building: BuildingWithoutId;
-};
+import { BuildingRequest, BuildingWithoutId } from "../../lib/types";
 
 const inputsList = [
   {
@@ -53,8 +44,8 @@ const inputsList = [
   },
   {
     type: "number",
-    field: "square_meters",
-    placeholder: "Square meters",
+    field: "area",
+    placeholder: "Area",
     required: true,
     valueAsNumber: true,
   },
@@ -189,63 +180,62 @@ const ButtonWrapper = styled.div`
   right: 2rem;
 `;
 
+type Props = {
+  title: string;
+  id?: string;
+  onClick: () => void;
+  onAdd?: (building: BuildingRequest) => void;
+  onUpdate?: (id: string, building: BuildingRequest) => void;
+  defaultValues?: BuildingWithoutId;
+};
+
 export default function BuildingForm({
   id,
   title,
   onClick,
   onAdd = () => {},
   onUpdate = () => {},
-  building,
+  defaultValues,
 }: Props) {
-  const {
-    type,
-    location,
-    address,
-    selling_price,
-    original_price,
-    square_meters,
-    nr_floors,
-    nr_rooms,
-    nr_bathrooms,
-    nr_garages,
-    nr_balconies,
-    discount_value,
-    description,
-  } = building;
   const { register, handleSubmit } = useForm({
-    defaultValues: {
-      type: title === "update" ? type : "",
-      location: title === "update" ? location : "",
-      address: title === "update" ? address : "",
-      selling_price: title === "update" ? selling_price : "",
-      original_price: title === "update" ? original_price : "",
-      square_meters: title === "update" ? square_meters : "",
-      nr_floors: title === "update" ? nr_floors : "",
-      nr_rooms: title === "update" ? nr_rooms : "",
-      nr_bathrooms: title === "update" ? nr_bathrooms : "",
-      nr_garages: title === "update" ? nr_garages : "",
-      nr_balconies: title === "update" ? nr_balconies : "",
-      discount_value: title === "update" ? discount_value : "",
-      description: title === "update" ? description : "",
-    },
+    defaultValues: defaultValues,
   });
+
+  const mapBuildingRequest = (building: BuildingWithoutId) => {
+    return {
+      type: building.type,
+      location: building.location,
+      address: building.address,
+      selling_price: building.selling_price,
+      discount_value: building.discount_value,
+      nr_balconies: building.nr_balconies,
+      nr_bathrooms: building.nr_bathrooms,
+      nr_floors: building.nr_floors,
+      nr_garages: building.nr_garages,
+      nr_rooms: building.nr_rooms,
+      original_price: building.original_price,
+      square_meters: building.area,
+      description: building.description,
+    };
+  };
+
   const onSubmit: SubmitHandler<BuildingWithoutId> = (data) => {
-    const { selling_price, original_price, square_meters, nr_floors } = data;
+    const { selling_price, original_price, area, nr_floors } = data;
 
     if (
       selling_price === 0 ||
       original_price === 0 ||
-      square_meters === 0 ||
+      area === 0 ||
       nr_floors === 0
     )
       return;
 
     if (id) {
-      onUpdate(id, data);
+      onUpdate(id, mapBuildingRequest(data));
       onClick();
       return;
     }
-    onAdd(data);
+    onAdd(mapBuildingRequest(data));
     onClick();
   };
 
@@ -275,6 +265,7 @@ export default function BuildingForm({
               )
             )}
           </Inputs>
+
           <Textarea
             placeholder="Description"
             rows={5}

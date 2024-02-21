@@ -6,10 +6,10 @@ import styled from "styled-components";
 import Button from "../../ui/Button";
 import BuildingForm from "./BuildingForm";
 
-import { BuildingWithoutId } from "../../lib/types";
+import { BuildingRequest } from "../../lib/types";
 
 type Props = {
-  onBuildingAdd: (newBuilding: BuildingWithoutId) => void;
+  onBuildingAdd: (building: BuildingRequest) => void;
 };
 
 const StyledAddBuildingButton = styled.div``;

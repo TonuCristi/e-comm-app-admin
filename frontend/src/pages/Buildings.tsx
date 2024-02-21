@@ -1,32 +1,20 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { FieldValues, useForm } from "react-hook-form";
 
 import Table from "../features/buildings/Table";
-import Sort from "../ui/Sort";
-import Filter from "../ui/Filter";
 import AddBuildingButton from "../features/buildings/AddBuildingButton";
 import Pagination from "../ui/Pagination";
 import TableHeader from "../ui/TableHeader";
 import TableRow from "../features/buildings/TableRow";
+import BuildingsControls from "../features/buildings/BuildingsControls";
+import Input from "../ui/Input";
+import BuildingsSearch from "../features/buildings/BuildingsSearch";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
-import { Building, BuildingWithoutId } from "../lib/types";
-
-const sortTypes = [
-  {
-    "price-asc": "Price ascending",
-  },
-  {
-    "price-desc": "Price descending",
-  },
-  {
-    "area-asc": "Area ascending",
-  },
-  {
-    "area-desc": "Area descending",
-  },
-];
+import { Building, BuildingResponse, BuildingRequest } from "../lib/types";
 
 const fields = [
   "Nr.",
@@ -41,16 +29,7 @@ const fields = [
 
 const StyledBuildings = styled.div``;
 
-const Wrapper = styled.div``;
-
-const Controls = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2.4rem;
-  margin-bottom: 2.4rem;
-`;
-
-const ButtonWrapper = styled.div`
+const InputWrapper = styled.div`
   margin-right: auto;
 `;
 
@@ -58,33 +37,105 @@ export default function Buildings() {
   const { buildings, isLoading, error, setIsLoading, setError, setBuildings } =
     useContext(BuildingsContext);
   const [pageNr, setPageNr] = useState<number>(0);
+  const { reset, watch, register } = useForm<FieldValues>({
+    defaultValues: {
+      searchValue: "",
+    },
+  });
+  const [searchParams] = useSearchParams();
 
   const buildingsPerPage = 9;
-  const buildingsCount = buildings.length;
+
+  // Type filter
+  const typeFilterBuildings = buildings.filter((building) => {
+    if (!searchParams.get("type")?.toLowerCase()) return true;
+    return (
+      building.type.toLowerCase() === searchParams.get("type")?.toLowerCase()
+    );
+  });
+
+  // Location filter
+  const locationFilterBuildings = typeFilterBuildings.filter((building) => {
+    if (!searchParams.get("location")?.toLowerCase()) return true;
+    return (
+      building.location.toLowerCase() ===
+      searchParams.get("location")?.toLowerCase()
+    );
+  });
+
+  // Sort
+  const sortBuildings = !searchParams.get("sort")
+    ? locationFilterBuildings
+    : locationFilterBuildings.sort((a, b) => {
+        if (searchParams.get("sort") === "price-desc") {
+          return b.selling_price - a.selling_price;
+        }
+
+        if (searchParams.get("sort") === "area-asc") {
+          return a.area - b.area;
+        }
+
+        if (searchParams.get("sort") === "area-desc") {
+          return b.area - a.area;
+        }
+
+        return a.selling_price - b.selling_price;
+      });
+
+  // Search
+  const allBuildings = sortBuildings.filter((building) =>
+    building.id.toLowerCase().includes(watch("searchValue").toLowerCase())
+  );
+
+  const mapBuildings = (buildings: BuildingResponse[]) =>
+    buildings.map((building) => ({
+      id: building._id,
+      type: building.type,
+      location: building.location,
+      address: building.address,
+      selling_price: building.selling_price,
+      original_price: building.original_price,
+      discount_value: building.discount_value,
+      nr_balconies: building.nr_balconies,
+      nr_bathrooms: building.nr_bathrooms,
+      nr_floors: building.nr_floors,
+      nr_garages: building.nr_garages,
+      nr_rooms: building.nr_rooms,
+      area: building.square_meters,
+      description: building.description,
+    }));
 
   useEffect(() => {
     BuildingsApi.getBuildings()
       .then((data) => {
-        setError("");
+        const buildings = mapBuildings(data);
+        setBuildings(buildings);
         setIsLoading(true);
-        setBuildings(data);
+        setError("");
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, [setBuildings, setIsLoading, setError]);
 
   const handleDelete = (id: string) => {
-    BuildingsApi.deleteBuilding(id).then((data) => setBuildings(data));
+    BuildingsApi.deleteBuilding(id).then((data) => {
+      const buildings = mapBuildings(data);
+      setBuildings(buildings);
+    });
   };
 
-  const handleAdd = (newBuilding: BuildingWithoutId) => {
-    BuildingsApi.addBuilding(newBuilding).then((data) => setBuildings(data));
+  const handleAdd = (building: BuildingRequest) => {
+    BuildingsApi.addBuilding(building).then((data) => {
+      const buildings = mapBuildings(data);
+      setBuildings(buildings);
+    });
   };
 
-  const handleUpdate = (id: string, building: BuildingWithoutId) => {
-    BuildingsApi.updateBuilding(id, building).then((data) =>
-      setBuildings(data)
-    );
+  const handleUpdate = (id: string, building: BuildingRequest) => {
+    BuildingsApi.updateBuilding(id, building).then((data) => {
+      const buildings = mapBuildings(data);
+      setBuildings(buildings);
+    });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -93,24 +144,26 @@ export default function Buildings() {
 
   return (
     <StyledBuildings>
-      <Wrapper>
-        <Controls>
-          <ButtonWrapper>
-            <AddBuildingButton onBuildingAdd={handleAdd} />
-          </ButtonWrapper>
-          <Filter defaultValue="all" buildings={buildings} filter="type" />
-          <Filter defaultValue="all" buildings={buildings} filter="location" />
-          <Sort defaultValue="ascending" sortTypes={sortTypes} />
-        </Controls>
-      </Wrapper>
+      <BuildingsControls buildings={buildings}>
+        <AddBuildingButton onBuildingAdd={handleAdd} />
+        <InputWrapper>
+          <BuildingsSearch reset={reset}>
+            <Input
+              variant="search"
+              placeholder="Search by id..."
+              register={register}
+            />
+          </BuildingsSearch>
+        </InputWrapper>
+      </BuildingsControls>
 
       <Table>
         <TableHeader variant="buildings" fields={fields} />
-        {buildings
+        {allBuildings
           .slice(pageNr * buildingsPerPage, buildingsPerPage * (pageNr + 1))
           .map((building: Building, i: number) => (
             <TableRow
-              key={building._id}
+              key={building.id}
               nr={pageNr * buildingsPerPage + i + 1}
               building={building}
               onBuildingDelete={handleDelete}
@@ -123,7 +176,7 @@ export default function Buildings() {
         pageNr={pageNr}
         setPageNr={setPageNr}
         dataPerPage={buildingsPerPage}
-        dataCount={buildingsCount}
+        dataCount={allBuildings.length}
       />
     </StyledBuildings>
   );

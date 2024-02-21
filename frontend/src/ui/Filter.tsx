@@ -6,9 +6,12 @@ import Select from "./Select";
 
 import { Building } from "../lib/types";
 
+type Filter = "location" | "type";
+
 type Props = {
-  filter: "location" | "type";
   defaultValue: string;
+  filter: Filter;
+  value: string | null;
   buildings: Building[];
 };
 
@@ -22,11 +25,16 @@ const FilterName = styled.div`
   font-weight: 500;
 `;
 
-export default function Filter({ filter, defaultValue, buildings }: Props) {
+export default function Filter({
+  filter,
+  defaultValue,
+  buildings,
+  value,
+}: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filters = useCallback(
-    (field: "location" | "type") =>
+    (field: Filter) =>
       buildings
         ?.map((building: Building) => building[field].toLowerCase())
         .filter(
@@ -39,12 +47,19 @@ export default function Filter({ filter, defaultValue, buildings }: Props) {
   );
 
   const filterTypes = filters(filter)
-    ? [{ all: "All" }, ...filters(filter)]
+    ? [{ [defaultValue.toLowerCase()]: defaultValue }, ...filters(filter)]
     : null;
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
     searchParams.set(filter, e.target.value);
     setSearchParams(searchParams);
+
+    if (
+      searchParams.get(filter)?.toLowerCase() === defaultValue.toLowerCase()
+    ) {
+      searchParams.delete(filter);
+      setSearchParams(searchParams);
+    }
   }
 
   return (
@@ -52,7 +67,11 @@ export default function Filter({ filter, defaultValue, buildings }: Props) {
       <FilterName>
         {filter.slice(0, 1).toUpperCase() + filter.slice(1)}:
       </FilterName>
-      <Select defaultValue={defaultValue} onChange={handleChange}>
+      <Select
+        key={searchParams.get(filter)}
+        defaultValue={value ?? defaultValue}
+        onChange={handleChange}
+      >
         {filterTypes?.map((type) => {
           const [key, value] = Object.entries(type)[0];
           return (
