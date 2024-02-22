@@ -65,15 +65,16 @@ export default function Pagination({
   }, [maxPage]);
 
   const getLeftLimit = () => {
-    if (pageNr <= 2) return 0;
-    if (pageNr >= maxPage - 3) return maxPage - 3;
-    return pageNr;
+    if (pageNr < 3) return 0;
+    if (pageNr >= maxPage - 2) return maxPage - 3;
+    if (pageNr >= maxPage - 3) return maxPage - 4;
+    return pageNr - 1;
   };
 
   const getRightLimit = () => {
-    if (pageNr <= 2) return 3;
-    if (pageNr > 2 && pageNr < maxPage - 3) return pageNr + 3;
-    return maxPage;
+    if (pageNr === 0) return pageNr + 3;
+    if (pageNr >= maxPage - 3) return maxPage;
+    return pageNr + 2;
   };
 
   return (
