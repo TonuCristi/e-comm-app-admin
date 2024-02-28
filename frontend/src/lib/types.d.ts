@@ -13,6 +13,7 @@ export type BuildingResponse = {
   original_price: number;
   square_meters: number;
   description: string;
+  available: boolean;
 };
 
 export type BuildingRequest = Omit<BuildingResponse, "_id">;
@@ -32,6 +33,7 @@ export type Building = {
   nr_rooms: number;
   area: number;
   description: string;
+  available: boolean;
 };
 
 export type BuildingWithoutId = Omit<Building, "id">;

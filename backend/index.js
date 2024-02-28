@@ -1,8 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
-import { PORT, mongoDBURL } from "./config.js";
 import buildingsRoute from "./routes/buildingsRoute.js";
 import cors from "cors";
+// import jwt from "jsonwebtoken";
+// import bcrypt from "bcrypt";
+// import { User } from "./models/userModel.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -28,11 +32,11 @@ app.get("/", (req, res) => {
 app.use("/buildings", buildingsRoute);
 
 mongoose
-  .connect(mongoDBURL)
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("App connected to database");
-    app.listen(PORT, () => {
-      console.log(`App is listening on port: ${PORT}`);
+    app.listen(process.env.PORT, () => {
+      console.log(`App is listening on port: ${process.env.PORT}`);
     });
   })
   .catch((err) => console.log(err));

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
+import { HiMiniXMark } from "react-icons/hi2";
 
 import Filter from "../../ui/Filter";
 import Sort from "../../ui/Sort";
 import Button from "../../ui/Button";
 
 import { Building } from "../../lib/types";
-import { HiMiniXMark } from "react-icons/hi2";
 
 const sortTypes = [
   { default: "Default" },

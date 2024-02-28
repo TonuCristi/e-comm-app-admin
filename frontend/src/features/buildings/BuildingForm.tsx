@@ -180,6 +180,12 @@ const ButtonWrapper = styled.div`
   right: 2rem;
 `;
 
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
 type Props = {
   title: string;
   id?: string;
@@ -216,6 +222,7 @@ export default function BuildingForm({
       original_price: building.original_price,
       square_meters: building.area,
       description: building.description,
+      available: building.available,
     };
   };
 
@@ -271,6 +278,10 @@ export default function BuildingForm({
             rows={5}
             {...register("description", { required: true })}
           />
+          <CheckBoxWrapper>
+            <input type="checkbox" {...register("available")} />
+            <label>Availability</label>
+          </CheckBoxWrapper>
           <Button variant="regular">{title} building</Button>
         </StyledAddBuildingForm>
       </Wrapper>

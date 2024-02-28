@@ -62,9 +62,10 @@ router.post("/", async (req, res) => {
       nr_balconies: req.body.nr_balconies,
       description: req.body.description,
       discount_value: req.body.discount_value,
+      available: req.body.available,
     };
 
-    const building = await Building.create(newBuilding);
+    await Building.create(newBuilding);
 
     const buildings = await Building.find({});
 

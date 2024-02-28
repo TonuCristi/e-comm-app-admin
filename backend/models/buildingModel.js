@@ -15,6 +15,7 @@ const buildingSchema = mongoose.Schema(
     nr_balconies: { type: Number, required: true },
     description: { type: String, required: true },
     discount_value: { type: Number, required: true },
+    available: { type: Boolean, required: true },
   },
   { timestamps: true }
 );

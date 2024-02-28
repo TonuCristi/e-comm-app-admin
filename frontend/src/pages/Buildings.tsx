@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 
@@ -33,6 +33,12 @@ const InputWrapper = styled.div`
   margin-right: auto;
 `;
 
+const CheckBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
 export default function Buildings() {
   const { buildings, isLoading, error, setIsLoading, setError, setBuildings } =
     useContext(BuildingsContext);
@@ -40,6 +46,7 @@ export default function Buildings() {
   const { reset, watch, register } = useForm<FieldValues>({
     defaultValues: {
       searchValue: "",
+      available: true,
     },
   });
   const [searchParams] = useSearchParams();
@@ -47,16 +54,18 @@ export default function Buildings() {
   const buildingsPerPage = 9;
 
   // Type filter
-  const typeFilterBuildings = buildings.filter((building) => {
-    if (!searchParams.get("type")?.toLowerCase()) return true;
-    return (
-      building.type.toLowerCase() === searchParams.get("type")?.toLowerCase()
-    );
-  });
+  const typeFilterBuildings = searchParams.get("type")
+    ? buildings.filter((building) => {
+        return (
+          building.type.toLowerCase() ===
+          searchParams.get("type")?.toLowerCase()
+        );
+      })
+    : buildings;
 
   // Location filter
   const locationFilterBuildings = typeFilterBuildings.filter((building) => {
-    if (!searchParams.get("location")?.toLowerCase()) return true;
+    if (!searchParams.get("location")) return true;
     return (
       building.location.toLowerCase() ===
       searchParams.get("location")?.toLowerCase()
@@ -82,28 +91,25 @@ export default function Buildings() {
         return a.selling_price - b.selling_price;
       });
 
+  // Availability filter
+  const availableBuildings = sortBuildings.filter(
+    (building) => building.available === watch("available")
+  );
+
   // Search
-  const allBuildings = sortBuildings.filter((building) =>
-    building.id.toLowerCase().includes(watch("searchValue").toLowerCase())
+  const allBuildings = availableBuildings.filter((building) =>
+    building.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
   );
 
   const mapBuildings = (buildings: BuildingResponse[]) =>
-    buildings.map((building) => ({
-      id: building._id,
-      type: building.type,
-      location: building.location,
-      address: building.address,
-      selling_price: building.selling_price,
-      original_price: building.original_price,
-      discount_value: building.discount_value,
-      nr_balconies: building.nr_balconies,
-      nr_bathrooms: building.nr_bathrooms,
-      nr_floors: building.nr_floors,
-      nr_garages: building.nr_garages,
-      nr_rooms: building.nr_rooms,
-      area: building.square_meters,
-      description: building.description,
-    }));
+    buildings.map((building) => {
+      const { _id: id, square_meters: area, ...rest } = building;
+      return {
+        id,
+        area,
+        ...rest,
+      };
+    });
 
   useEffect(() => {
     BuildingsApi.getBuildings()
@@ -124,12 +130,15 @@ export default function Buildings() {
     });
   };
 
-  const handleAdd = (building: BuildingRequest) => {
-    BuildingsApi.addBuilding(building).then((data) => {
-      const buildings = mapBuildings(data);
-      setBuildings(buildings);
-    });
-  };
+  const handleAdd = useCallback(
+    (building: BuildingRequest) => {
+      BuildingsApi.addBuilding(building).then((data) => {
+        const buildings = mapBuildings(data);
+        setBuildings(buildings);
+      });
+    },
+    [setBuildings]
+  );
 
   const handleUpdate = (id: string, building: BuildingRequest) => {
     BuildingsApi.updateBuilding(id, building).then((data) => {
@@ -155,6 +164,10 @@ export default function Buildings() {
             />
           </BuildingsSearch>
         </InputWrapper>
+        <CheckBoxWrapper>
+          <input type="checkbox" {...register("available")} />
+          <label>Availability</label>
+        </CheckBoxWrapper>
       </BuildingsControls>
 
       <Table>
