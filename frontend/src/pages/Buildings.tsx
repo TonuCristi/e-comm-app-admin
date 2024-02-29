@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 
-import Table from "../features/buildings/Table";
+import Table from "../ui/Table";
 import AddBuildingButton from "../features/buildings/AddBuildingButton";
 import Pagination from "../ui/Pagination";
 import TableHeader from "../ui/TableHeader";
@@ -166,7 +166,7 @@ export default function Buildings() {
         </CheckBoxWrapper>
       </BuildingsControls>
 
-      <Table>
+      <Table variant="buildings">
         <TableHeader variant="buildings" fields={fields} />
         {allBuildings
           .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
