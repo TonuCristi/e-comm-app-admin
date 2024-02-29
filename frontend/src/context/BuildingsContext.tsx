@@ -19,7 +19,7 @@ interface BuildingsContext {
 
 export const BuildingsContext = createContext<BuildingsContext>({
   buildings: [],
-  isLoading: false,
+  isLoading: true,
   error: "",
   setIsLoading: () => undefined,
   setError: () => undefined,

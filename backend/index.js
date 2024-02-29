@@ -1,10 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import buildingsRoute from "./routes/buildingsRoute.js";
+import ordersRoute from "./routes/ordersRoute.js";
 import cors from "cors";
-// import jwt from "jsonwebtoken";
-// import bcrypt from "bcrypt";
-// import { User } from "./models/userModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -30,6 +28,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/buildings", buildingsRoute);
+
+app.use("/orders", ordersRoute);
 
 mongoose
   .connect(process.env.MONGODB_URL)
