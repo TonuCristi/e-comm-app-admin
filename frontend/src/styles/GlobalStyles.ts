@@ -15,6 +15,9 @@ const GlobalStyles = createGlobalStyle`
         
         /* Red */
         --color-red-500: #ef4444; 
+
+        /* Emerald */
+        --color-emerald-500: rgb(5 150 105);
     }
 
     *, 

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Select from "./Select";
 
 import { Building } from "../lib/types";
+import { capitalize } from "../utils/capitalize";
 
 type Filter = "location" | "type";
 
@@ -64,9 +65,7 @@ export default function Filter({
 
   return (
     <StyledFilter>
-      <FilterName>
-        {filter.slice(0, 1).toUpperCase() + filter.slice(1)}:
-      </FilterName>
+      <FilterName>{capitalize(filter)}:</FilterName>
       <Select
         key={searchParams.get(filter)}
         defaultValue={value ?? defaultValue}

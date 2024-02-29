@@ -7,6 +7,7 @@ import Button from "../../ui/Button";
 
 import EditBuildingButton from "./EditBuildingButton";
 import { Building, BuildingRequest } from "../../lib/types";
+import { capitalize } from "../../utils/capitalize";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -74,7 +75,7 @@ export default function TableRow({
     <StyledTableRow>
       <Field>{nr}</Field>
       <Field>{id}</Field>
-      <Field>{type.slice(0, 1).toUpperCase() + type.slice(1)}</Field>
+      <Field>{capitalize(type)}</Field>
 
       <Field>
         {new Intl.NumberFormat("en-US", {
@@ -95,7 +96,7 @@ export default function TableRow({
         {area} m<sup>2</sup>
       </Field>
 
-      <Field>{location.slice(0, 1).toUpperCase() + location.slice(1)}</Field>
+      <Field>{capitalize(location)}</Field>
 
       <Field>
         <Wrapper>

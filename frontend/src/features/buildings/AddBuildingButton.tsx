@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { HiMiniPlusSmall } from "react-icons/hi2";
 import styled from "styled-components";
@@ -19,9 +19,7 @@ const Icon = styled(HiMiniPlusSmall)`
   stroke-width: 1;
 `;
 
-const AddBuildingButton = memo(function AddBuildingButton({
-  onBuildingAdd,
-}: Props) {
+export default function AddBuildingButton({ onBuildingAdd }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleClick() {
@@ -44,6 +42,4 @@ const AddBuildingButton = memo(function AddBuildingButton({
         )}
     </StyledAddBuildingButton>
   );
-});
-
-export default AddBuildingButton;
+}

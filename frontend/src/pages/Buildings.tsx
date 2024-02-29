@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 
@@ -15,6 +15,8 @@ import BuildingsSearch from "../features/buildings/BuildingsSearch";
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
 import { Building, BuildingResponse, BuildingRequest } from "../lib/types";
+
+const PER_PAGE = 9;
 
 const fields = [
   "Nr.",
@@ -50,8 +52,6 @@ export default function Buildings() {
     },
   });
   const [searchParams] = useSearchParams();
-
-  const buildingsPerPage = 9;
 
   // Type filter
   const typeFilterBuildings = searchParams.get("type")
@@ -116,7 +116,6 @@ export default function Buildings() {
       .then((data) => {
         const buildings = mapBuildings(data);
         setBuildings(buildings);
-        setIsLoading(true);
         setError("");
       })
       .catch((err) => setError(err.message))
@@ -130,15 +129,12 @@ export default function Buildings() {
     });
   };
 
-  const handleAdd = useCallback(
-    (building: BuildingRequest) => {
-      BuildingsApi.addBuilding(building).then((data) => {
-        const buildings = mapBuildings(data);
-        setBuildings(buildings);
-      });
-    },
-    [setBuildings]
-  );
+  const handleAdd = (building: BuildingRequest) => {
+    BuildingsApi.addBuilding(building).then((data) => {
+      const buildings = mapBuildings(data);
+      setBuildings(buildings);
+    });
+  };
 
   const handleUpdate = (id: string, building: BuildingRequest) => {
     BuildingsApi.updateBuilding(id, building).then((data) => {
@@ -173,11 +169,11 @@ export default function Buildings() {
       <Table>
         <TableHeader variant="buildings" fields={fields} />
         {allBuildings
-          .slice(pageNr * buildingsPerPage, buildingsPerPage * (pageNr + 1))
+          .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
           .map((building: Building, i: number) => (
             <TableRow
               key={building.id}
-              nr={pageNr * buildingsPerPage + i + 1}
+              nr={pageNr * PER_PAGE + i + 1}
               building={building}
               onBuildingDelete={handleDelete}
               onBuildingUpdate={handleUpdate}
@@ -188,7 +184,7 @@ export default function Buildings() {
       <Pagination
         pageNr={pageNr}
         setPageNr={setPageNr}
-        dataPerPage={buildingsPerPage}
+        dataPerPage={PER_PAGE}
         dataCount={allBuildings.length}
       />
     </StyledBuildings>
