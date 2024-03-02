@@ -15,6 +15,8 @@ export type BuildingResponse = {
   square_meters: number;
   description: string;
   available: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type BuildingRequest = Omit<BuildingResponse, "_id">;
@@ -35,6 +37,8 @@ export type Building = {
   area: number;
   description: string;
   available: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type BuildingWithoutId = Omit<Building, "id">;
@@ -48,6 +52,8 @@ export type OrderResponse = {
   original_price: number;
   paid: boolean;
   buildingId: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type OrderRequest = Omit<OrderResponse, "_id">;
@@ -60,6 +66,8 @@ export type Order = {
   original_price: number;
   paid: boolean;
   buildingId: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type OrderWithoutId = Omit<Order, "id">;

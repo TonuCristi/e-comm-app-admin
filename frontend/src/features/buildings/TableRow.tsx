@@ -85,7 +85,7 @@ export default function TableRow({
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(+selling_price)}
+        }).format(selling_price)}
       </Field>
 
       <Field>
