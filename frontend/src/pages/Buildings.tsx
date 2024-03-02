@@ -10,7 +10,7 @@ import TableHeader from "../ui/TableHeader";
 import TableRow from "../features/buildings/TableRow";
 import BuildingsControls from "../features/buildings/BuildingsControls";
 import Input from "../ui/Input";
-import BuildingsSearch from "../features/buildings/BuildingsSearch";
+import Search from "../ui/Search";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
@@ -152,14 +152,15 @@ export default function Buildings() {
       <BuildingsControls buildings={buildings}>
         <AddBuildingButton onBuildingAdd={handleAdd} />
         <InputWrapper>
-          <BuildingsSearch reset={reset}>
+          <Search reset={reset}>
             <Input
               variant="search"
               placeholder="Search by id..."
               register={register}
             />
-          </BuildingsSearch>
+          </Search>
         </InputWrapper>
+
         <CheckBoxWrapper>
           <input type="checkbox" {...register("available")} />
           <label>Availability</label>

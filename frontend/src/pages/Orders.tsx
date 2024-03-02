@@ -1,13 +1,20 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { FieldValues, useForm } from "react-hook-form";
 
 import TableHeader from "../ui/TableHeader";
+import Table from "../ui/Table";
+import TableRow from "../features/orders/TableRow";
+import Pagination from "../ui/Pagination";
+import Input from "../ui/Input";
+import Search from "../ui/Search";
+import OrdersControls from "../features/orders/OrdersControls";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import OrdersApi from "../api/OrdersApi";
 import { OrderResponse } from "../lib/types";
-import Table from "../ui/Table";
-import TableRow from "../features/orders/TableRow";
+
+const PER_PAGE = 9;
 
 const fields = ["Nr.", "Id", "Type", "Location", "Price", "Status", ""];
 
@@ -16,6 +23,17 @@ const StyledOrders = styled.div``;
 export default function Orders() {
   const { isLoading, error, orders, setIsLoading, setError, setOrders } =
     useContext(BuildingsContext);
+  const [pageNr, setPageNr] = useState(0);
+  const { register, reset, watch } = useForm<FieldValues>({
+    defaultValues: {
+      searchValue: "",
+    },
+  });
+
+  // Search
+  const allOrders = orders.filter((order) =>
+    order.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
+  );
 
   const mapOrders = (orders: OrderResponse[]) =>
     orders.map((order) => {
@@ -34,18 +52,49 @@ export default function Orders() {
       .finally(() => setIsLoading(false));
   }, [setError, setIsLoading, setOrders]);
 
+  const handleDelete = (id: string) => {
+    OrdersApi.deleteOrder(id).then((data) => {
+      const orders = mapOrders(data);
+      setOrders(orders);
+    });
+  };
+
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong...</div>;
 
   return (
     <StyledOrders>
+      <OrdersControls>
+        <Search reset={reset}>
+          <Input
+            variant="search"
+            placeholder="Search by id..."
+            register={register}
+          />
+        </Search>
+      </OrdersControls>
+
       <Table variant="orders">
         <TableHeader variant="orders" fields={fields} />
-        {orders.map((order, i) => (
-          <TableRow key={order.id} nr={i + 1} order={order} />
-        ))}
+        {allOrders
+          .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
+          .map((order, i) => (
+            <TableRow
+              key={order.id}
+              nr={pageNr * PER_PAGE + i + 1}
+              order={order}
+              onOrderDelete={handleDelete}
+            />
+          ))}
       </Table>
+
+      <Pagination
+        pageNr={pageNr}
+        setPageNr={setPageNr}
+        dataPerPage={PER_PAGE}
+        dataCount={orders.length}
+      />
     </StyledOrders>
   );
 }

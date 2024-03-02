@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import BuildingsApi from "../api/BuildingsApi";
-import { Building, BuildingResponse } from "../lib/types";
 import { capitalize } from "../utils/capitalize";
+import { useBuilding } from "../hooks/useBuilding";
 
 const StyledBuildigPage = styled.div`
   font-weight: 600;
@@ -55,26 +53,8 @@ const Discount = styled.div`
 `;
 
 export default function BuildingPage() {
-  const [building, setBuilding] = useState<Building>({
-    id: "",
-    type: "",
-    location: "",
-    address: "",
-    description: "",
-    available: true,
-    area: 0,
-    nr_balconies: 0,
-    nr_bathrooms: 0,
-    nr_floors: 0,
-    nr_garages: 0,
-    nr_rooms: 0,
-    selling_price: 0,
-    original_price: 0,
-    discount_value: 0,
-  });
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
   const { buildingId } = useParams();
+  const { isLoading, error, building } = useBuilding(buildingId);
 
   const {
     id,
@@ -93,30 +73,6 @@ export default function BuildingPage() {
     original_price,
     discount_value,
   } = building;
-
-  const mapBuilding = (building: BuildingResponse) => {
-    const { _id: id, square_meters: area, ...rest } = building;
-    return {
-      id,
-      area,
-      ...rest,
-    };
-  };
-
-  useEffect(() => {
-    BuildingsApi.getBuilding(buildingId)
-      .then((data) => {
-        const building = mapBuilding(data);
-        setBuilding(building);
-        setError("");
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [buildingId]);
-
-  console.log(building);
 
   if (isLoading) return <div>Loading...</div>;
 

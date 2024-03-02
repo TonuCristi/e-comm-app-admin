@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
 import { HiMiniXMark } from "react-icons/hi2";
 
-import Filter from "../../ui/Filter";
+import Filter from "./Filter";
 import Sort from "../../ui/Sort";
 import Button from "../../ui/Button";
 
@@ -24,7 +24,7 @@ const sortTypes = [
   },
 ];
 
-const StyledControls = styled.div`
+const StyledBuildingsControls = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
@@ -58,7 +58,7 @@ export default function BuildingsControls({ children, buildings }: Props) {
   }
 
   return (
-    <StyledControls>
+    <StyledBuildingsControls>
       {children}
       <Filter
         defaultValue="All"
@@ -80,6 +80,6 @@ export default function BuildingsControls({ children, buildings }: Props) {
       <Button variant="operation" onClick={handleClick}>
         <Icon />
       </Button>
-    </StyledControls>
+    </StyledBuildingsControls>
   );
 }

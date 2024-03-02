@@ -7,6 +7,7 @@ import BuildingPage from "./pages/BuildingPage";
 import Settings from "./pages/Settings";
 import PageNotFound from "./pages/PageNotFound";
 import Orders from "./pages/Orders";
+import OrderPage from "./pages/OrderPage";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import BuildingsProvider from "./context/BuildingsContext";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/orders",
         element: <Orders />,
+      },
+      {
+        path: "/orders/:orderId",
+        element: <OrderPage />,
       },
       {
         path: "/settings",
