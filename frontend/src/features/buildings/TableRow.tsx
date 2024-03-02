@@ -8,6 +8,9 @@ import Button from "../../ui/Button";
 import EditBuildingButton from "./EditBuildingButton";
 import { Building, BuildingRequest } from "../../lib/types";
 import { capitalize } from "../../utils/capitalize";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import ConfirmationModal from "../../ui/ConfirmationModal";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -70,6 +73,7 @@ export default function TableRow({
   onBuildingUpdate,
 }: Props) {
   const { id, type, selling_price, area, location, discount_value } = building;
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <StyledTableRow>
@@ -100,9 +104,17 @@ export default function TableRow({
 
       <Field>
         <Wrapper>
-          <Button onClick={() => onBuildingDelete(id)} variant="operation">
+          <Button onClick={() => setIsOpen(true)} variant="operation">
             <RemoveIcon />
           </Button>
+          {isOpen &&
+            createPortal(
+              <ConfirmationModal
+                onClick={() => onBuildingDelete(id)}
+                setIsOpen={setIsOpen}
+              />,
+              document.body
+            )}
         </Wrapper>
       </Field>
 
