@@ -22,7 +22,7 @@ const variants = {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
   `,
   operation: css`
     background-color: var(--color-indigo-50);

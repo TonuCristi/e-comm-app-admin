@@ -1,8 +1,13 @@
-import { ReactNode } from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { createPortal } from "react-dom";
+
+import Button from "../ui/Button";
+import ConfirmationModal from "../ui/ConfirmationModal";
 
 import { capitalize } from "../utils/capitalize";
 import { useBuilding } from "../hooks/useBuilding";
+import { BuildingRequest, Order, OrderRequest } from "../lib/types";
 
 const StyledInfo = styled.div``;
 
@@ -72,25 +77,27 @@ const OrderId = styled.div`
   border-bottom: 2px solid #fff;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 4.8rem;
+`;
+
 type Props = {
-  orderId?: string;
   buildingId: string | undefined;
-  created?: string;
-  updated?: string;
-  paid?: boolean;
-  isOrder: boolean;
-  children?: ReactNode;
+  order?: Order;
+  onOrderUpdate?: (id: string, order: OrderRequest) => void;
+  onBuildingUpdate?: (id: string, building: BuildingRequest) => void;
 };
 
 export default function Info({
-  orderId,
   buildingId,
-  created,
-  updated,
-  paid = false,
-  isOrder,
+  order,
+  onOrderUpdate,
+  onBuildingUpdate,
 }: Props) {
   const { isLoading, error, building } = useBuilding(buildingId);
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     id,
@@ -112,6 +119,20 @@ export default function Info({
     updatedAt,
   } = building;
 
+  const {
+    id: orderId,
+    paid,
+    createdAt: created,
+    updatedAt: updated,
+  } = order
+    ? order
+    : {
+        id: "",
+        createdAt: "",
+        updatedAt: "",
+        paid: false,
+      };
+
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong...</div>;
@@ -119,11 +140,9 @@ export default function Info({
   return (
     <StyledInfo>
       <StatusWrapper>
-        {isOrder && (
-          <Status $paid={paid}>{paid ? "Paid" : "Processing"}</Status>
-        )}
+        {order && <Status $paid={paid}>{paid ? "Paid" : "Processing"}</Status>}
 
-        {!isOrder && (
+        {!order && (
           <Availability $available={available}>
             {available ? "Available" : "Not available"}
           </Availability>
@@ -133,18 +152,18 @@ export default function Info({
 
         <Created>
           Created:{" "}
-          {isOrder && created
+          {order && created
             ? new Date(created).toLocaleDateString()
             : new Date(createdAt).toLocaleDateString()}
         </Created>
         <Updated>
           Updated:{" "}
-          {isOrder && updated
+          {order && updated
             ? new Date(updated).toLocaleDateString()
             : new Date(updatedAt).toLocaleDateString()}
         </Updated>
 
-        {isOrder && <OrderId>Order id:{orderId}</OrderId>}
+        {order && <OrderId>Order id: {orderId}</OrderId>}
       </StatusWrapper>
 
       <Wrapper>
@@ -177,6 +196,29 @@ export default function Info({
       </Wrapper>
 
       <Description>Description: {description}</Description>
+
+      {order && onOrderUpdate && onBuildingUpdate && buildingId && (
+        <ButtonWrapper>
+          <Button variant="regular" onClick={() => setIsOpen(true)}>
+            Confirm paying
+          </Button>
+          {isOpen &&
+            createPortal(
+              <ConfirmationModal
+                setIsOpen={setIsOpen}
+                onClick={() => {
+                  onOrderUpdate(orderId, { ...order, paid: true });
+                  onBuildingUpdate(buildingId, {
+                    ...building,
+                    available: false,
+                    square_meters: area,
+                  });
+                }}
+              />,
+              document.body
+            )}
+        </ButtonWrapper>
+      )}
     </StyledInfo>
   );
 }

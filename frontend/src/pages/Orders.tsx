@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FieldValues, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 import TableHeader from "../ui/TableHeader";
 import Table from "../ui/Table";
@@ -9,6 +10,7 @@ import Pagination from "../ui/Pagination";
 import Input from "../ui/Input";
 import Search from "../ui/Search";
 import OrdersControls from "../features/orders/OrdersControls";
+import Filter from "../features/orders/Filter";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import OrdersApi from "../api/OrdersApi";
@@ -29,9 +31,16 @@ export default function Orders() {
       searchValue: "",
     },
   });
+  const [searchParams] = useSearchParams();
+
+  // Status filter
+  const statusFilterOrders =
+    searchParams.get("status") !== "paid"
+      ? orders.filter(({ paid }) => paid === false)
+      : orders.filter(({ paid }) => paid);
 
   // Search
-  const allOrders = orders.filter((order) =>
+  const allOrders = statusFilterOrders.filter((order) =>
     order.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
   );
 
@@ -73,6 +82,8 @@ export default function Orders() {
             register={register}
           />
         </Search>
+
+        <Filter />
       </OrdersControls>
 
       <Table variant="orders">
@@ -93,7 +104,7 @@ export default function Orders() {
         pageNr={pageNr}
         setPageNr={setPageNr}
         dataPerPage={PER_PAGE}
-        dataCount={orders.length}
+        dataCount={allOrders.length}
       />
     </StyledOrders>
   );

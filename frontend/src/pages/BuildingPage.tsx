@@ -13,7 +13,7 @@ export default function BuildingPage() {
 
   return (
     <StyledBuildingPage>
-      <Info buildingId={buildingId} isOrder={false} />
+      <Info buildingId={buildingId} />
     </StyledBuildingPage>
   );
 }
