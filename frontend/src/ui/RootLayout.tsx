@@ -21,7 +21,6 @@ const Main = styled.main`
   height: 100%;
   padding: 3.2rem 4.8rem;
   width: 100%;
-  /* margin: 0 auto; */
 `;
 
 export default function RootLayout() {
