@@ -64,23 +64,27 @@ export default function Dashboard() {
     .reduce((acc, val) => acc + val, 0);
 
   const getBuildingType = (type: string) =>
-    orders.filter((order) => order.type === type);
+    orders.filter((order) => order.type === type).length;
+
+  // Sales per building
+  const salesPerBuilding = (type: string) =>
+    orders.filter((order) => order.type === type && order.paid).length;
 
   const data = [
     {
       name: "Duplex",
-      Orders: getBuildingType("duplex").length,
-      Sales: 5,
+      Orders: getBuildingType("duplex"),
+      Sales: salesPerBuilding("duplex"),
     },
     {
       name: "Apartment",
-      Orders: getBuildingType("apartment").length,
-      Sales: 5,
+      Orders: getBuildingType("apartment"),
+      Sales: salesPerBuilding("apartment"),
     },
     {
       name: "House",
-      Orders: getBuildingType("house").length,
-      Sales: 5,
+      Orders: getBuildingType("house"),
+      Sales: salesPerBuilding("house"),
     },
   ];
 
