@@ -157,6 +157,7 @@ export default function Buildings() {
               variant="search"
               placeholder="Search by id..."
               register={register}
+              searchField="searchValue"
             />
           </Search>
         </InputWrapper>

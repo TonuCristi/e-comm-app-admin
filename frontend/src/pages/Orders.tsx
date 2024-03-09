@@ -80,6 +80,7 @@ export default function Orders() {
             variant="search"
             placeholder="Search by id..."
             register={register}
+            searchField="searchValue"
           />
         </Search>
 

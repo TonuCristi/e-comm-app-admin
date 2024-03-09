@@ -8,6 +8,7 @@ import Settings from "./pages/Settings";
 import PageNotFound from "./pages/PageNotFound";
 import Orders from "./pages/Orders";
 import OrderPage from "./pages/OrderPage";
+import Authentication from "./pages/Authentication";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import BuildingsProvider from "./context/BuildingsContext";
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         element: <Settings />,
       },
     ],
+  },
+  {
+    path: "/auth",
+    element: <Authentication />,
   },
 ]);
 

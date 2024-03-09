@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-type Variant = "regular" | "operation";
+type Variant = "regular" | "operation" | "auth";
 
 type Props = {
   children: ReactNode;
@@ -22,7 +22,6 @@ const variants = {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    /* text-transform: capitalize; */
   `,
   operation: css`
     background-color: var(--color-indigo-50);
@@ -32,7 +31,19 @@ const variants = {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+  `,
+  auth: css`
+    background-color: var(--color-indigo-50);
+    color: var(--color-indigo-700);
+    padding: 1rem 2.4rem;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--color-indigo-100);
+      color: var(--color-indigo-900);
+    }
   `,
 };
 

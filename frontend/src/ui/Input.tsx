@@ -38,14 +38,20 @@ type Props = {
   variant: Variant;
   placeholder: string;
   register: UseFormRegister<FieldValues>;
+  searchField: string;
 };
 
-export default function Input({ variant, placeholder, register }: Props) {
+export default function Input({
+  variant,
+  placeholder,
+  register,
+  searchField,
+}: Props) {
   return (
     <StyledInput
       $variant={variant}
       placeholder={placeholder}
-      {...register("searchValue")}
+      {...register(searchField)}
     />
   );
 }

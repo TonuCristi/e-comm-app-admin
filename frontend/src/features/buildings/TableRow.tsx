@@ -1,16 +1,16 @@
 import styled from "styled-components";
 import { HiArrowSmallRight, HiMiniXMark } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 
 import Field from "../../ui/Field";
 import Button from "../../ui/Button";
-
 import EditBuildingButton from "./EditBuildingButton";
+import ConfirmationModal from "../../ui/ConfirmationModal";
+
 import { Building, BuildingRequest } from "../../lib/types";
 import { capitalize } from "../../utils/capitalize";
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import ConfirmationModal from "../../ui/ConfirmationModal";
 
 const StyledTableRow = styled.div`
   display: grid;
