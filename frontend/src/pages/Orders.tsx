@@ -20,7 +20,11 @@ const PER_PAGE = 9;
 
 const fields = ["Nr.", "Id", "Type", "Location", "Price", "Status", ""];
 
-const StyledOrders = styled.div``;
+const StyledOrders = styled.div`
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+  }
+`;
 
 export default function Orders() {
   const { isLoading, error, orders, setIsLoading, setError, setOrders } =
@@ -84,7 +88,7 @@ export default function Orders() {
           />
         </Search>
 
-        <Filter />
+        <Filter setPageNr={setPageNr} />
       </OrdersControls>
 
       <Table variant="orders">

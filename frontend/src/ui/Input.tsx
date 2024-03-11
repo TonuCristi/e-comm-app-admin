@@ -32,6 +32,11 @@ const StyledInput = styled.input<VariantProps>`
   outline: none;
 
   ${(props) => variants[props.$variant]}
+
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
 `;
 
 type Props = {

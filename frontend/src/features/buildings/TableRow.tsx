@@ -14,7 +14,7 @@ import { capitalize } from "../../utils/capitalize";
 
 const StyledTableRow = styled.div`
   display: grid;
-  grid-template-columns: 5fr 25fr 10fr 15fr 10fr 10fr 10fr 5fr 5fr 5fr;
+  grid-template-columns: 5fr 25fr 15fr 15fr 10fr 10fr 5fr 5fr 5fr;
   border-bottom: 3px solid var(--color-indigo-300);
 
   &:last-child {
@@ -72,7 +72,7 @@ export default function TableRow({
   onBuildingDelete,
   onBuildingUpdate,
 }: Props) {
-  const { id, type, selling_price, area, location, discount_value } = building;
+  const { id, type, selling_price, location, discount_value } = building;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -96,9 +96,9 @@ export default function TableRow({
         )}
       </Field>
 
-      <Field>
+      {/* <Field>
         {area} m<sup>2</sup>
-      </Field>
+      </Field> */}
 
       <Field>{capitalize(location)}</Field>
 

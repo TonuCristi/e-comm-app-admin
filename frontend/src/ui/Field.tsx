@@ -14,6 +14,10 @@ const StyledField = styled.div`
   &:last-child {
     border-right: none;
   }
+
+  @media (max-width: 1535px) {
+    padding: 0.6rem;
+  }
 `;
 
 export default function Field({ children }: Props) {

@@ -29,6 +29,16 @@ const StyledBuildingsControls = styled.div`
   align-items: center;
   gap: 2.4rem;
   margin-bottom: 2.4rem;
+
+  @media (max-width: 1535px) {
+    gap: 2rem;
+  }
+`;
+
+const Wrapper = styled.div`
+  @media (max-width: 1535px) {
+    display: none;
+  }
 `;
 
 const Icon = styled(HiMiniXMark)`
@@ -60,26 +70,34 @@ export default function BuildingsControls({ children, buildings }: Props) {
   return (
     <StyledBuildingsControls>
       {children}
-      <Filter
-        defaultValue="All"
-        value={searchParams.get("type")}
-        buildings={buildings}
-        filter="type"
-      />
-      <Filter
-        defaultValue="All"
-        value={searchParams.get("location")}
-        buildings={buildings}
-        filter="location"
-      />
-      <Sort
-        defaultValue="Default"
-        value={searchParams.get("sort")}
-        sortTypes={sortTypes}
-      />
-      <Button variant="operation" onClick={handleClick}>
-        <Icon />
-      </Button>
+      <Wrapper>
+        <Filter
+          defaultValue="All"
+          value={searchParams.get("type")}
+          buildings={buildings}
+          filter="type"
+        />
+      </Wrapper>
+      <Wrapper>
+        <Filter
+          defaultValue="All"
+          value={searchParams.get("location")}
+          buildings={buildings}
+          filter="location"
+        />
+      </Wrapper>
+      <Wrapper>
+        <Sort
+          defaultValue="Default"
+          value={searchParams.get("sort")}
+          sortTypes={sortTypes}
+        />
+      </Wrapper>
+      <Wrapper>
+        <Button variant="operation" onClick={handleClick}>
+          <Icon />
+        </Button>
+      </Wrapper>
     </StyledBuildingsControls>
   );
 }

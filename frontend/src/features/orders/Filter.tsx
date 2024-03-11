@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
-import { ChangeEvent } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 import Select from "../../ui/Select";
 
@@ -12,12 +12,22 @@ const StyledFilter = styled.div`
 
 const FilterName = styled.div`
   font-weight: 500;
+
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+  }
 `;
 
-export default function Filter() {
+type Props = {
+  setPageNr: Dispatch<SetStateAction<number>>;
+};
+
+export default function Filter({ setPageNr }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
+    setPageNr(0);
+
     if (e.target.value === "processing") {
       searchParams.delete("status");
       setSearchParams(searchParams);

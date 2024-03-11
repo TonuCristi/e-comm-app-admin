@@ -15,7 +15,11 @@ const LinksList = styled.ul`
   flex-direction: column;
   list-style: none;
   gap: 2rem;
-  margin-left: 3.2rem;
+  /* margin-left: 3.2rem; */
+
+  /*@media (max-width: 1535px) {
+    margin-left: 2.8rem;
+  } */
 `;
 
 const DashboardIcon = styled(HiMiniChartPie)`

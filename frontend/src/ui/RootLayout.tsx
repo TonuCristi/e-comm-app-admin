@@ -10,6 +10,10 @@ const StyledRootLayout = styled.div`
   grid-template-rows: 1fr;
   width: 100%;
   overflow: hidden;
+
+  @media (max-width: 1535px) {
+    /* grid-template-columns: 20rem 1fr; */
+  }
 `;
 
 const Container = styled.div`

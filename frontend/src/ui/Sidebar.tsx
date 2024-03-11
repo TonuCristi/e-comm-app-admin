@@ -10,13 +10,14 @@ const StyledSidebar = styled.aside`
   display: flex;
   flex-direction: column;
   background-color: var(--color-indigo-900);
-  padding: 3.2rem 0;
+  padding: 2.4rem 0 2.4rem 2.8rem;
 `;
 
 const ButtonWrapper = styled.div`
   margin-top: auto;
   display: flex;
   justify-content: center;
+  padding: 0 2.4rem 0 0;
 `;
 
 const Icon = styled(HiMiniArrowRightOnRectangle)`

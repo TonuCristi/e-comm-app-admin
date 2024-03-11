@@ -13,7 +13,7 @@ import { capitalize } from "../../utils/capitalize";
 
 const StyledTabelRow = styled.div`
   display: grid;
-  grid-template-columns: 5fr 25fr 15fr 15fr 15fr 15fr 5fr 5fr;
+  grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr 5fr 5fr;
   border-bottom: 3px solid var(--color-indigo-300);
 
   &:last-child {

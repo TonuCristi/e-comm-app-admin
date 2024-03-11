@@ -5,10 +5,14 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  margin-left: 4.8rem;
   margin-bottom: 6.4rem;
   font-size: 2rem;
-  background-color: var();
+  padding: 1.6rem;
+  /* margin-left: 4.8rem; */
+
+  /* @media (max-width: 1535px) {
+    margin-left: 4.4rem;
+  } */
 `;
 
 const StyledTitle = styled.div`

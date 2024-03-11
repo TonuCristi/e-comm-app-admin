@@ -22,6 +22,11 @@ const StyledSelect = styled.select`
     color: var(--color-indigo-900);
     padding: 1.2rem;
   }
+
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+    padding: 1rem;
+  }
 `;
 
 export default function Select({ defaultValue, onChange, children }: Props) {

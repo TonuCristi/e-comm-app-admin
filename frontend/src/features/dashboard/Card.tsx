@@ -17,6 +17,10 @@ const Wrapper = styled.div`
 
 const Title = styled.h3`
   font-size: 2rem;
+
+  @media (max-width: 1535px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Data = styled.p`

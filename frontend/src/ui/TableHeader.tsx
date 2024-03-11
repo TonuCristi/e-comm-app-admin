@@ -15,10 +15,10 @@ type VariantProps = {
 
 const variants = {
   buildings: css`
-    grid-template-columns: 5fr 25fr 10fr 15fr 10fr 10fr 10fr 5fr 5fr 5fr;
+    grid-template-columns: 5fr 25fr 15fr 15fr 10fr 10fr 5fr 5fr 5fr;
   `,
   orders: css`
-    grid-template-columns: 5fr 25fr 15fr 15fr 15fr 15fr 10fr;
+    grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr 5fr 5fr;
   `,
 };
 

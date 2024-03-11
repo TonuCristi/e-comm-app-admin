@@ -24,12 +24,16 @@ const fields = [
   "Type",
   "Selling Price",
   "Discount",
-  "Area",
+  // "Area",
   "Location",
   "",
 ];
 
-const StyledBuildings = styled.div``;
+const StyledBuildings = styled.div`
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+  }
+`;
 
 const InputWrapper = styled.div`
   margin-right: auto;
@@ -145,7 +149,7 @@ export default function Buildings() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  if (error) return <div>Something went wrong....</div>;
+  if (error) return <div>Something went wrong...</div>;
 
   return (
     <StyledBuildings>
@@ -163,8 +167,14 @@ export default function Buildings() {
         </InputWrapper>
 
         <CheckBoxWrapper>
-          <input type="checkbox" {...register("available")} />
-          <label>Availability</label>
+          <input
+            id="available"
+            type="checkbox"
+            {...register("available", {
+              onChange: () => setPageNr(0),
+            })}
+          />
+          <label htmlFor="available">Availability</label>
         </CheckBoxWrapper>
       </BuildingsControls>
 

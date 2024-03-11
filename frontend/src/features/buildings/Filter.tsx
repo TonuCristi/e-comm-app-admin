@@ -24,6 +24,10 @@ const StyledFilter = styled.div`
 
 const FilterName = styled.div`
   font-weight: 500;
+
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+  }
 `;
 
 export default function Filter({
