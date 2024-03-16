@@ -67,7 +67,7 @@ export type Inputs = {
 
 export default function Authentication() {
   const [isLogin, setIsLogin] = useState(true);
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, reset } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => console.log(data);
 
   return (
@@ -106,8 +106,14 @@ export default function Authentication() {
             <Button variant="auth">{isLogin ? "Login" : "Register"}</Button>
           </ButtonWrapper>
         </AuthForm>
-        <Button variant="auth" onClick={() => setIsLogin((prev) => !prev)}>
-          Create new account
+        <Button
+          variant="auth"
+          onClick={() => {
+            reset();
+            setIsLogin((prev) => !prev);
+          }}
+        >
+          {isLogin ? "Create new account" : "Already have an account?"}
         </Button>
       </Container>
     </StyledAuthenticaton>
