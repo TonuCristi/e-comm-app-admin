@@ -6,6 +6,7 @@ type Variant = "regular" | "operation" | "auth";
 type Props = {
   children: ReactNode;
   variant: Variant;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -44,6 +45,11 @@ const variants = {
       background-color: var(--color-indigo-100);
       color: var(--color-indigo-900);
     }
+
+    &:disabled {
+      background-color: var(--color-indigo-100);
+      color: var(--color-indigo-900);
+    }
   `,
 };
 
@@ -58,9 +64,14 @@ const StyledButton = styled.button<VariantProps>`
   ${(props) => variants[props.$variant]}
 `;
 
-export default function Button({ children, variant, onClick }: Props) {
+export default function Button({
+  children,
+  variant,
+  disabled,
+  onClick,
+}: Props) {
   return (
-    <StyledButton onClick={onClick} $variant={variant}>
+    <StyledButton onClick={onClick} $variant={variant} disabled={disabled}>
       {children}
     </StyledButton>
   );

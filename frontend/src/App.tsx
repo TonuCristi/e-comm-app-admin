@@ -12,6 +12,7 @@ import Authentication from "./pages/Authentication";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import BuildingsProvider from "./context/BuildingsContext";
+import AuthProvider from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -53,10 +54,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <BuildingsProvider>
-      <RouterProvider router={router} />
-      <GlobalStyles />
-    </BuildingsProvider>
+    <AuthProvider>
+      <BuildingsProvider>
+        <RouterProvider router={router} />
+        <GlobalStyles />
+      </BuildingsProvider>
+    </AuthProvider>
   );
 }
 

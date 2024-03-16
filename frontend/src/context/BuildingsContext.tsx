@@ -8,7 +8,7 @@ import {
 
 import { Building, Order } from "../lib/types";
 
-interface BuildingsContext {
+type BuildingsContext = {
   orders: Order[];
   buildings: Building[];
   isLoading: boolean;
@@ -17,7 +17,7 @@ interface BuildingsContext {
   setError: Dispatch<SetStateAction<string>>;
   setBuildings: Dispatch<SetStateAction<Building[]>>;
   setOrders: Dispatch<SetStateAction<Order[]>>;
-}
+};
 
 export const BuildingsContext = createContext<BuildingsContext>({
   buildings: [],

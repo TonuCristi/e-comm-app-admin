@@ -71,3 +71,30 @@ export type Order = {
 };
 
 export type OrderWithoutId = Omit<Order, "id">;
+
+// ----- Users -----
+type Role = "admin" | "employee" | "customer";
+
+export type UserResponse = {
+  _id: string;
+  username: string;
+  email: string;
+  password: string;
+  role: Role;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UserRequest = Omid<UserResponse, "_id">;
+
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  role: Role;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UserWithoutId = Omid<User, "id">;

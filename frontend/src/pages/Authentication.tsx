@@ -1,8 +1,13 @@
-import styled from "styled-components";
-import Button from "../ui/Button";
-
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import styled from "styled-components";
+
+import Button from "../ui/Button";
+import Message from "../ui/Message";
+
+import UserApi from "../api/AuthApi";
+import { AuthContext } from "../context/AuthContext";
+import { UserResponse } from "../lib/types";
 
 const StyledAuthenticaton = styled.div`
   height: 100vh;
@@ -22,9 +27,15 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2.4rem;
+
+  @media (max-width: 1279px) {
+    width: 45%;
+  }
 `;
 
-const Title = styled.h1``;
+const Title = styled.h1`
+  font-size: 3.2rem;
+`;
 
 const AuthForm = styled.form`
   display: flex;
@@ -66,14 +77,54 @@ export type Inputs = {
 };
 
 export default function Authentication() {
+  const {
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    // currentUser,
+    setCurrentUser,
+  } = useContext(AuthContext);
+
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, reset } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => console.log(data);
+
+  const mapUser = ({ _id, ...user }: UserResponse) => ({
+    id: _id,
+    ...user,
+  });
+
+  function handleSignupUser(data: Inputs) {
+    setIsLoading(true);
+    UserApi.signupUser({ ...data, role: "admin" })
+      .then((res) => {
+        const user = mapUser(res);
+        setCurrentUser(user);
+        setError("");
+        reset();
+      })
+      .catch((err) => {
+        const errors: string[] = Object.values(err.response.data);
+        for (let i = 0; i < errors.length; i++) {
+          if (errors[i]) return setError(errors[i]);
+        }
+      })
+      .finally(() => setIsLoading(false));
+  }
+
+  // console.log(error);
+  // console.log(isLoading);
+  // console.log(currentUser);
+
+  const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    if (!isLogin) handleSignupUser(data);
+  };
 
   return (
     <StyledAuthenticaton>
       <Container>
         <Title>{isLogin ? "Login" : "Register"}</Title>
+
         <AuthForm onSubmit={handleSubmit(onSubmit)}>
           {!isLogin && (
             <Input
@@ -81,8 +132,7 @@ export default function Authentication() {
               placeholder="Username"
               {...register("username", {
                 required: true,
-                minLength: 5,
-                maxLength: 25,
+                minLength: 6,
               })}
             />
           )}
@@ -98,14 +148,22 @@ export default function Authentication() {
             placeholder="Password"
             {...register("password", {
               required: true,
-              minLength: 5,
+              minLength: 6,
               maxLength: 25,
             })}
           />
-          <ButtonWrapper>
-            <Button variant="auth">{isLogin ? "Login" : "Register"}</Button>
-          </ButtonWrapper>
+          {!isLoading ? (
+            <ButtonWrapper>
+              <Button variant="auth" disabled={isLoading}>
+                {isLogin ? "Login" : "Register"}
+              </Button>
+            </ButtonWrapper>
+          ) : (
+            <div>Loading...</div>
+          )}
+          {!!error && <Message variant="error">{error}</Message>}
         </AuthForm>
+
         <Button
           variant="auth"
           onClick={() => {
