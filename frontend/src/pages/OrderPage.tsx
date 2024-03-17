@@ -17,6 +17,7 @@ import { useBuilding } from "../hooks/useBuilding";
 import ConfirmationModal from "../ui/ConfirmationModal";
 import { createPortal } from "react-dom";
 import Button from "../ui/Button";
+import { AuthContext } from "../context/AuthContext";
 
 const StyledOrderPage = styled.div`
   font-weight: 600;
@@ -75,6 +76,9 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function OrderPage() {
+  const {
+    currentUser: { token },
+  } = useContext(AuthContext);
   const { setOrders } = useContext(BuildingsContext);
   const [order, setOrder] = useState<Order>({
     id: "",
@@ -116,18 +120,22 @@ export default function OrderPage() {
   };
 
   useEffect(() => {
-    OrdersApi.getOrder(orderId)
+    if (!token) return;
+
+    OrdersApi.getOrder(orderId, token)
       .then((data) => {
         const order = mapOrder(data);
         setOrder(order);
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [orderId]);
+  }, [orderId, token]);
 
   const handleUpdate = (id: string | undefined, order: OrderRequest) => {
+    if (!token) return;
+
     if (id) {
-      OrdersApi.updateOrder(id, order).then((data) => {
+      OrdersApi.updateOrder(id, order, token).then((data) => {
         const orders = mapOrders(data);
         setOrders(orders);
         const newOrder = mapOrder({ _id: id, ...order });
@@ -137,7 +145,9 @@ export default function OrderPage() {
   };
 
   const handleBuildingUpdate = (id: string, building: BuildingRequest) => {
-    BuildingsApi.updateBuilding(id, building).then((data) => console.log(data));
+    if (!token) return;
+
+    BuildingsApi.updateBuilding(id, building, token);
   };
 
   if (isLoading || isLoadingBuilding) return <div>Loading...</div>;

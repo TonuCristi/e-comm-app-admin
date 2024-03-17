@@ -1,7 +1,11 @@
 import express from "express";
 import { Order } from "../models/orderModel.js";
+import { requireAuth } from "../middleware/requireauth.js";
 
 const router = express.Router();
+
+// require auth for all order routes
+router.use(requireAuth);
 
 const fields = ["type", "location", "selling_price", "original_price"];
 

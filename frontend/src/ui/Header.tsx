@@ -1,13 +1,17 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 
 import Avatar from "./Avatar";
+
+import { AuthContext } from "../context/AuthContext";
 
 const StyledHeader = styled.header`
   padding: 3.2rem 4.8rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 2.4rem;
 `;
 
 const CurrentPage = styled.h2`
@@ -15,6 +19,7 @@ const CurrentPage = styled.h2`
 `;
 
 export default function Header() {
+  const { currentUser } = useContext(AuthContext);
   const location = useLocation();
   const currentRoute = location.pathname.split("/")[1];
 
@@ -24,7 +29,7 @@ export default function Header() {
         {location.pathname === "/" ? "Dashboard" : currentRoute}
       </CurrentPage>
 
-      <Avatar />
+      <Avatar username={currentUser.username} />
     </StyledHeader>
   );
 }

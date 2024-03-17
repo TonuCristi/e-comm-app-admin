@@ -1,7 +1,11 @@
 import express from "express";
 import { Building } from "../models/buildingModel.js";
+import { requireAuth } from "../middleware/requireauth.js";
 
 const router = express.Router();
+
+// require auth for all building routes
+router.use(requireAuth);
 
 const fields = [
   "type",

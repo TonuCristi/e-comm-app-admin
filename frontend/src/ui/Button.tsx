@@ -23,6 +23,12 @@ const variants = {
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--color-indigo-100);
+      color: var(--color-indigo-900);
+    }
   `,
   operation: css`
     background-color: var(--color-indigo-50);

@@ -15,6 +15,7 @@ import Search from "../ui/Search";
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
 import { Building, BuildingResponse, BuildingRequest } from "../lib/types";
+import { AuthContext } from "../context/AuthContext";
 
 const PER_PAGE = 9;
 
@@ -46,6 +47,9 @@ const CheckBoxWrapper = styled.div`
 `;
 
 export default function Buildings() {
+  const {
+    currentUser: { token },
+  } = useContext(AuthContext);
   const { buildings, isLoading, error, setIsLoading, setError, setBuildings } =
     useContext(BuildingsContext);
   const [pageNr, setPageNr] = useState<number>(0);
@@ -116,7 +120,9 @@ export default function Buildings() {
     });
 
   useEffect(() => {
-    BuildingsApi.getBuildings()
+    if (!token) return;
+
+    BuildingsApi.getBuildings(token)
       .then((data) => {
         const buildings = mapBuildings(data);
         setBuildings(buildings);
@@ -124,24 +130,30 @@ export default function Buildings() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [setBuildings, setIsLoading, setError]);
+  }, [setBuildings, setIsLoading, setError, token]);
 
   const handleDelete = (id: string) => {
-    BuildingsApi.deleteBuilding(id).then((data) => {
+    if (!token) return;
+
+    BuildingsApi.deleteBuilding(id, token).then((data) => {
       const buildings = mapBuildings(data);
       setBuildings(buildings);
     });
   };
 
   const handleAdd = (building: BuildingRequest) => {
-    BuildingsApi.addBuilding(building).then((data) => {
+    if (!token) return;
+
+    BuildingsApi.addBuilding(building, token).then((data) => {
       const buildings = mapBuildings(data);
       setBuildings(buildings);
     });
   };
 
   const handleUpdate = (id: string, building: BuildingRequest) => {
-    BuildingsApi.updateBuilding(id, building).then((data) => {
+    if (!token) return;
+
+    BuildingsApi.updateBuilding(id, building, token).then((data) => {
       const buildings = mapBuildings(data);
       setBuildings(buildings);
     });

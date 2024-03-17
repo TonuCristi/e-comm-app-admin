@@ -25,19 +25,6 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-// fire function after doc saved to db
-// userSchema.post("save", function (doc, next) {
-//   console.log("New user was created and saved", doc);
-//   next();
-// });
-
-// fire function before doc saved to db
-// userSchema.pre("save", async function (next) {
-//   const salt = await bcrypt.genSalt();
-//   this.password = await bcrypt.hash(this.password, salt);
-//   next();
-// });
-
 // static signup method
 userSchema.statics.signup = async function (newUser) {
   const { username, email, password, role } = newUser;
@@ -65,6 +52,27 @@ userSchema.statics.signup = async function (newUser) {
   const hash = await bcrypt.hash(password, salt);
 
   const user = await this.create({ username, email, password: hash, role });
+
+  return user;
+};
+
+// static login method
+userSchema.statics.login = async function (loggedUser) {
+  const { email, password } = loggedUser;
+
+  // email validation
+  if (!email) throw new Error("Please enter an email");
+
+  // password validation
+  if (!password) throw new Error("Please enter a password");
+
+  const user = await this.findOne({ email });
+
+  if (!user) throw new Error("Incorrect email");
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) throw new Error("Incorrect password");
 
   return user;
 };

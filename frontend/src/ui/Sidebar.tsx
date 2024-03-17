@@ -5,6 +5,8 @@ import NavLinks from "./NavLinks";
 import Title from "./Title";
 import Button from "./Button";
 
+import { useLogout } from "../hooks/useLogout";
+
 const StyledSidebar = styled.aside`
   height: 100vh;
   display: flex;
@@ -25,6 +27,8 @@ const Icon = styled(HiMiniArrowRightOnRectangle)`
 `;
 
 export default function Sidebar() {
+  const { logout } = useLogout();
+
   return (
     <StyledSidebar>
       <Title />
@@ -32,7 +36,7 @@ export default function Sidebar() {
       <NavLinks />
 
       <ButtonWrapper>
-        <Button variant="regular">
+        <Button variant="regular" onClick={logout}>
           <Icon />
           Logout
         </Button>

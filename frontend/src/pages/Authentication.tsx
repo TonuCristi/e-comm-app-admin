@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "../ui/Button";
@@ -7,7 +8,7 @@ import Message from "../ui/Message";
 
 import UserApi from "../api/AuthApi";
 import { AuthContext } from "../context/AuthContext";
-import { UserResponse } from "../lib/types";
+import { UserRequestLogin, UserResponse } from "../lib/types";
 
 const StyledAuthenticaton = styled.div`
   height: 100vh;
@@ -77,17 +78,11 @@ export type Inputs = {
 };
 
 export default function Authentication() {
-  const {
-    isLoading,
-    setIsLoading,
-    error,
-    setError,
-    // currentUser,
-    setCurrentUser,
-  } = useContext(AuthContext);
-
+  const { isLoading, setIsLoading, error, setError, setCurrentUser } =
+    useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, reset } = useForm<Inputs>();
+  const navigate = useNavigate();
 
   const mapUser = ({ _id, ...user }: UserResponse) => ({
     id: _id,
@@ -100,24 +95,43 @@ export default function Authentication() {
       .then((res) => {
         const user = mapUser(res);
         setCurrentUser(user);
+
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+
         setError("");
         reset();
       })
       .catch((err) => {
-        const errors: string[] = Object.values(err.response.data);
-        for (let i = 0; i < errors.length; i++) {
-          if (errors[i]) return setError(errors[i]);
-        }
+        const error = err.response.data.error;
+        setError(error);
       })
       .finally(() => setIsLoading(false));
   }
 
-  // console.log(error);
-  // console.log(isLoading);
-  // console.log(currentUser);
+  function handleLoginUser(user: UserRequestLogin) {
+    setIsLoading(true);
+    UserApi.loginUser(user)
+      .then((res) => {
+        const user = mapUser(res);
+        setCurrentUser(user);
+
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+
+        setError("");
+        reset();
+      })
+      .catch((err) => {
+        const error = err.response.data.error;
+        setError(error);
+      })
+      .finally(() => setIsLoading(false));
+  }
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     if (!isLogin) handleSignupUser(data);
+    if (isLogin) handleLoginUser(data);
   };
 
   return (
@@ -132,10 +146,10 @@ export default function Authentication() {
               placeholder="Username"
               {...register("username", {
                 required: true,
-                minLength: 6,
               })}
             />
           )}
+
           <Input
             type="email"
             placeholder="Email"
@@ -143,24 +157,21 @@ export default function Authentication() {
               required: true,
             })}
           />
+
           <Input
             type="password"
             placeholder="Password"
             {...register("password", {
               required: true,
-              minLength: 6,
-              maxLength: 25,
             })}
           />
-          {!isLoading ? (
-            <ButtonWrapper>
-              <Button variant="auth" disabled={isLoading}>
-                {isLogin ? "Login" : "Register"}
-              </Button>
-            </ButtonWrapper>
-          ) : (
-            <div>Loading...</div>
-          )}
+
+          <ButtonWrapper>
+            <Button variant="auth" disabled={isLoading}>
+              {isLogin ? "Login" : "Register"}
+            </Button>
+          </ButtonWrapper>
+
           {!!error && <Message variant="error">{error}</Message>}
         </AuthForm>
 

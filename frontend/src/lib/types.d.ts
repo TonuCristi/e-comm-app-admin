@@ -79,22 +79,24 @@ export type UserResponse = {
   _id: string;
   username: string;
   email: string;
-  password: string;
   role: Role;
+  token: string;
   createdAt: string;
-  updatedAt: string;
 };
 
-export type UserRequest = Omid<UserResponse, "_id">;
+export type UserRequest = Omid<UserResponse, "_id" | "createdAt" | "updatedAt">;
+
+export type UserRequestLogin = Omid<
+  UserResponse,
+  "_id" | "username" | "createdAt" | "updatedAt"
+>;
 
 export type User = {
-  id: string;
   username: string;
   email: string;
-  password: string;
   role: Role;
+  token: string;
   createdAt: string;
-  updatedAt: string;
 };
 
 export type UserWithoutId = Omid<User, "id">;

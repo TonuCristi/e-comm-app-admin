@@ -20,13 +20,9 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-app.get("/", (req, res) => {
-  return res.status(200).send("It works!");
-});
 
 app.use("/buildings", buildingsRoute);
 

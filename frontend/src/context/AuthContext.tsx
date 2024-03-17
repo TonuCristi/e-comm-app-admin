@@ -3,6 +3,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -23,13 +24,11 @@ export const AuthContext = createContext<AuthContext>({
   error: "",
   setError: () => undefined,
   currentUser: {
-    id: "",
     username: "",
     email: "",
-    password: "",
     role: "customer",
+    token: "",
     createdAt: "",
-    updatedAt: "",
   },
   setCurrentUser: () => undefined,
 });
@@ -38,14 +37,20 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentUser, setCurrentUser] = useState<User>({
-    id: "",
     username: "",
     email: "",
-    password: "",
     role: "customer",
+    token: "",
     createdAt: "",
-    updatedAt: "",
   });
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      setCurrentUser(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <AuthContext.Provider

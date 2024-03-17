@@ -15,6 +15,7 @@ import Filter from "../features/orders/Filter";
 import { BuildingsContext } from "../context/BuildingsContext";
 import OrdersApi from "../api/OrdersApi";
 import { OrderResponse } from "../lib/types";
+import { AuthContext } from "../context/AuthContext";
 
 const PER_PAGE = 9;
 
@@ -27,6 +28,9 @@ const StyledOrders = styled.div`
 `;
 
 export default function Orders() {
+  const {
+    currentUser: { token },
+  } = useContext(AuthContext);
   const { isLoading, error, orders, setIsLoading, setError, setOrders } =
     useContext(BuildingsContext);
   const [pageNr, setPageNr] = useState(0);
@@ -55,7 +59,9 @@ export default function Orders() {
     });
 
   useEffect(() => {
-    OrdersApi.getOrders()
+    if (!token) return;
+
+    OrdersApi.getOrders(token)
       .then((data) => {
         const orders = mapOrders(data);
         setOrders(orders);
@@ -63,10 +69,12 @@ export default function Orders() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [setError, setIsLoading, setOrders]);
+  }, [setError, setIsLoading, setOrders, token]);
 
   const handleDelete = (id: string) => {
-    OrdersApi.deleteOrder(id).then((data) => {
+    if (!token) return;
+
+    OrdersApi.deleteOrder(id, token).then((data) => {
       const orders = mapOrders(data);
       setOrders(orders);
     });

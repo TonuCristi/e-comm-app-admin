@@ -223,6 +223,8 @@ export default function BuildingForm({
       square_meters: building.area,
       description: building.description,
       available: building.available,
+      createdAt: building.createdAt,
+      updatedAt: building.updatedAt,
     };
   };
 

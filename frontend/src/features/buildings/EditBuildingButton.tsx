@@ -36,7 +36,7 @@ export default function EditBuildingButton({ id, onUpdate, building }: Props) {
       {isOpen &&
         createPortal(
           <BuildingForm
-            title="update"
+            title="Update"
             onClick={handleClick}
             id={id}
             onUpdate={onUpdate}
