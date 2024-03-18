@@ -15,7 +15,6 @@ import { BuildingsContext } from "../context/BuildingsContext";
 import { BuildingResponse, OrderResponse } from "../lib/types";
 import BuildingsApi from "../api/BuildingsApi";
 import OrdersApi from "../api/OrdersApi";
-import { AuthContext } from "../context/AuthContext";
 
 const StyledDashboard = styled.div`
   display: grid;
@@ -44,9 +43,6 @@ const UsersIcon = styled(HiMiniUsers)`
 `;
 
 export default function Dashboard() {
-  const {
-    currentUser: { token },
-  } = useContext(AuthContext);
   const {
     isLoading,
     error,
@@ -109,9 +105,7 @@ export default function Dashboard() {
     });
 
   useEffect(() => {
-    if (!token) return;
-
-    BuildingsApi.getBuildings(token)
+    BuildingsApi.getBuildings()
       .then((data) => {
         const buildings = mapBuildings(data);
         setBuildings(buildings);
@@ -119,12 +113,8 @@ export default function Dashboard() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [setBuildings, setError, setIsLoading, token]);
 
-  useEffect(() => {
-    if (!token) return;
-
-    OrdersApi.getOrders(token)
+    OrdersApi.getOrders()
       .then((data) => {
         const buildings = mapOrders(data);
         setOrders(buildings);
@@ -132,7 +122,7 @@ export default function Dashboard() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }, [setOrders, setIsLoading, setError, token]);
+  }, [setBuildings, setOrders, setError, setIsLoading]);
 
   if (isLoading) return <div>Loading...</div>;
 

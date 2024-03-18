@@ -95,7 +95,6 @@ export type User = {
   username: string;
   email: string;
   role: Role;
-  token: string;
   createdAt: string;
 };
 

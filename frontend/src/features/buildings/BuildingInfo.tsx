@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import { capitalize } from "../utils/capitalize";
-import { Building } from "../lib/types";
+import { capitalize } from "../../utils/capitalize";
+import { Building } from "../../lib/types";
 
-const StyledInfo = styled.div``;
+const StyledBuildingInfo = styled.div``;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -49,7 +49,7 @@ type Props = {
   building: Building;
 };
 
-export default function Info({ building }: Props) {
+export default function BuildingInfo({ building }: Props) {
   const {
     id,
     type,
@@ -67,7 +67,7 @@ export default function Info({ building }: Props) {
   } = building;
 
   return (
-    <StyledInfo>
+    <StyledBuildingInfo>
       <Wrapper>
         <Field>Id: {id}</Field>
         <Field>Type: {capitalize(type)}</Field>
@@ -98,6 +98,6 @@ export default function Info({ building }: Props) {
       </Wrapper>
 
       <Description>Description: {description}</Description>
-    </StyledInfo>
+    </StyledBuildingInfo>
   );
 }

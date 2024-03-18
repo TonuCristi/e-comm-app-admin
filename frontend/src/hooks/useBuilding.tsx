@@ -1,12 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Building, BuildingResponse } from "../lib/types";
 import BuildingsApi from "../api/BuildingsApi";
-import { AuthContext } from "../context/AuthContext";
 
 export function useBuilding(buildingId: string | undefined) {
-  const {
-    currentUser: { token },
-  } = useContext(AuthContext);
   const [building, setBuilding] = useState<Building>({
     id: "",
     type: "",
@@ -39,9 +35,7 @@ export function useBuilding(buildingId: string | undefined) {
   };
 
   useEffect(() => {
-    if (!token) return;
-
-    BuildingsApi.getBuilding(buildingId, token)
+    BuildingsApi.getBuilding(buildingId)
       .then((data) => {
         const building = mapBuilding(data);
         setBuilding(building);
@@ -51,7 +45,7 @@ export function useBuilding(buildingId: string | undefined) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [buildingId, token]);
+  }, [buildingId]);
 
   return { isLoading, error, building };
 }

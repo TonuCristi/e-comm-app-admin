@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { useContext, useEffect } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const StyledRootLayout = styled.div`
   display: grid;
@@ -10,10 +12,6 @@ const StyledRootLayout = styled.div`
   grid-template-rows: 1fr;
   width: 100%;
   overflow: hidden;
-
-  @media (max-width: 1535px) {
-    /* grid-template-columns: 20rem 1fr; */
-  }
 `;
 
 const Container = styled.div`
@@ -28,6 +26,16 @@ const Main = styled.main`
 `;
 
 export default function RootLayout() {
+  const { setCurrentUser } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      setCurrentUser(JSON.parse(user));
+    }
+  }, [setCurrentUser]);
+
   return (
     <StyledRootLayout>
       <Sidebar />

@@ -3,45 +3,29 @@ import api from "../config/api";
 import { BuildingResponse, BuildingRequest } from "../lib/types";
 
 const BuildingsApi = {
-  getBuildings(bearer: string) {
+  getBuildings() {
     return api
-      .get("/buildings", {
-        headers: {
-          Authorization: `Bearer ${bearer}`,
-        },
-      })
+      .get("/buildings")
       .then(({ data }: AxiosResponse<BuildingResponse[]>) => data);
   },
-  getBuilding(id: string | undefined, bearer: string) {
+  getBuilding(id: string | undefined) {
     return api
-      .get(`/buildings/${id}`, {
-        headers: { Authorization: `Bearer ${bearer}` },
-      })
+      .get(`/buildings/${id}`)
       .then(({ data }: AxiosResponse<BuildingResponse>) => data);
   },
-  deleteBuilding(id: string, bearer: string) {
+  deleteBuilding(id: string) {
     return api
-      .delete(`/buildings/${id}`, {
-        headers: { Authorization: `Bearer ${bearer}` },
-      })
+      .delete(`/buildings/${id}`)
       .then(({ data }: AxiosResponse<BuildingResponse[]>) => data);
   },
-  addBuilding(newBuilding: BuildingRequest, bearer: string) {
+  addBuilding(newBuilding: BuildingRequest) {
     return api
-      .post(
-        "/buildings",
-        { ...newBuilding },
-        { headers: { Authorization: `Bearer ${bearer}` } }
-      )
+      .post("/buildings", { ...newBuilding })
       .then(({ data }: AxiosResponse<BuildingResponse[]>) => data);
   },
-  updateBuilding(id: string, newBuilding: BuildingRequest, bearer: string) {
+  updateBuilding(id: string, newBuilding: BuildingRequest) {
     return api
-      .put(
-        `/buildings/${id}`,
-        { ...newBuilding },
-        { headers: { Authorization: `Bearer ${bearer}` } }
-      )
+      .put(`/buildings/${id}`, { ...newBuilding })
       .then(({ data }: AxiosResponse<BuildingResponse[]>) => data);
   },
 };

@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import Button from "../ui/Button";
@@ -9,6 +8,7 @@ import Message from "../ui/Message";
 import UserApi from "../api/AuthApi";
 import { AuthContext } from "../context/AuthContext";
 import { UserRequestLogin, UserResponse } from "../lib/types";
+import { GlobalContext } from "../context/GlobalContext";
 
 const StyledAuthenticaton = styled.div`
   height: 100vh;
@@ -79,10 +79,10 @@ export type Inputs = {
 
 export default function Authentication() {
   const { isLoading, setIsLoading, error, setError, setCurrentUser } =
-    useContext(AuthContext);
+    useContext(GlobalContext);
+  const { setToken } = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, reset } = useForm<Inputs>();
-  const navigate = useNavigate();
 
   const mapUser = ({ _id, ...user }: UserResponse) => ({
     id: _id,
@@ -90,14 +90,14 @@ export default function Authentication() {
   });
 
   function handleSignupUser(data: Inputs) {
-    setIsLoading(true);
     UserApi.signupUser({ ...data, role: "admin" })
       .then((res) => {
         const user = mapUser(res);
+
         setCurrentUser(user);
+        setToken(user.token);
 
         localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
 
         setError("");
         reset();
@@ -114,10 +114,11 @@ export default function Authentication() {
     UserApi.loginUser(user)
       .then((res) => {
         const user = mapUser(res);
+
         setCurrentUser(user);
+        setToken(user.token);
 
         localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
 
         setError("");
         reset();

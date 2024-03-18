@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import Avatar from "./Avatar";
 
-import { AuthContext } from "../context/AuthContext";
+import { GlobalContext } from "../context/GlobalContext";
 
 const StyledHeader = styled.header`
   padding: 3.2rem 4.8rem 0;
@@ -19,7 +19,7 @@ const CurrentPage = styled.h2`
 `;
 
 export default function Header() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useContext(GlobalContext);
   const location = useLocation();
   const currentRoute = location.pathname.split("/")[1];
 
@@ -29,7 +29,7 @@ export default function Header() {
         {location.pathname === "/" ? "Dashboard" : currentRoute}
       </CurrentPage>
 
-      <Avatar username={currentUser.username} />
+      {currentUser.username && <Avatar username={currentUser.username} />}
     </StyledHeader>
   );
 }

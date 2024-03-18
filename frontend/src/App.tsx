@@ -1,6 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import RootLayout from "./ui/RootLayout";
 import Dashboard from "./pages/Dashboard";
 import Buildings from "./pages/Buildings";
 import BuildingPage from "./pages/BuildingPage";
@@ -8,7 +7,7 @@ import Settings from "./pages/Settings";
 import PageNotFound from "./pages/PageNotFound";
 import Orders from "./pages/Orders";
 import OrderPage from "./pages/OrderPage";
-import Authentication from "./pages/Authentication";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import BuildingsProvider from "./context/BuildingsContext";
@@ -17,7 +16,7 @@ import AuthProvider from "./context/AuthContext";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: <ProtectedRoute />,
     errorElement: <PageNotFound />,
     children: [
       {
@@ -45,10 +44,6 @@ const router = createBrowserRouter([
         element: <Settings />,
       },
     ],
-  },
-  {
-    path: "/auth",
-    element: <Authentication />,
   },
 ]);
 

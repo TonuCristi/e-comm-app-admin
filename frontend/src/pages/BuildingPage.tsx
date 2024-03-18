@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
-import Info from "../ui/Info";
+import BuildingInfo from "../features/buildings/BuildingInfo";
 
 import { useBuilding } from "../hooks/useBuilding";
 
@@ -69,7 +69,7 @@ export default function BuildingPage() {
         <Updated>Updated: {new Date(updatedAt).toLocaleDateString()}</Updated>
       </StatusWrapper>
 
-      <Info building={building} />
+      <BuildingInfo building={building} />
     </StyledBuildingPage>
   );
 }

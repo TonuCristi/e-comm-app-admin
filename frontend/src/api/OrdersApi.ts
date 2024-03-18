@@ -4,22 +4,14 @@ import api from "../config/api";
 import { OrderRequest, OrderResponse } from "../lib/types";
 
 const OrdersApi = {
-  getOrders(bearer: string) {
+  getOrders() {
     return api
-      .get("/orders", {
-        headers: {
-          Authorization: `Bearer ${bearer}`,
-        },
-      })
+      .get("/orders")
       .then(({ data }: AxiosResponse<OrderResponse[]>) => data);
   },
-  getOrder(id: string | undefined, bearer: string) {
+  getOrder(id: string | undefined) {
     return api
-      .get(`/orders/${id}`, {
-        headers: {
-          Authorization: `Bearer ${bearer}`,
-        },
-      })
+      .get(`/orders/${id}`)
       .then(({ data }: AxiosResponse<OrderResponse>) => data);
   },
   //   addOrder(newOrder: OrderRequest) {
@@ -27,26 +19,14 @@ const OrdersApi = {
   //       .post("/orders", { newOrder })
   //       .then(({ data }: AxiosResponse<OrderResponse>) => data);
   //   },
-  deleteOrder(id: string, bearer: string) {
+  deleteOrder(id: string) {
     return api
-      .delete(`/orders/${id}`, {
-        headers: {
-          Authorization: `Bearer ${bearer}`,
-        },
-      })
+      .delete(`/orders/${id}`)
       .then(({ data }: AxiosResponse<OrderResponse[]>) => data);
   },
-  updateOrder(id: string, newOrder: OrderRequest, bearer: string) {
+  updateOrder(id: string, newOrder: OrderRequest) {
     return api
-      .put(
-        `/orders/${id}`,
-        { ...newOrder },
-        {
-          headers: {
-            Authorization: `Bearer ${bearer}`,
-          },
-        }
-      )
+      .put(`/orders/${id}`, { ...newOrder })
       .then(({ data }: AxiosResponse<OrderResponse[]>) => data);
   },
 };
