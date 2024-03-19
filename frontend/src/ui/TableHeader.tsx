@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 import Field from "./Field";
 
-type Variant = "buildings" | "orders";
+type Variant = "buildings" | "orders" | "users";
 
 type Props = {
   fields: string[];
@@ -19,6 +19,9 @@ const variants = {
   `,
   orders: css`
     grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr 5fr 5fr;
+  `,
+  users: css`
+    grid-template-columns: 5fr 25fr 20fr 20fr 10fr 10fr 5fr 5fr;
   `,
 };
 

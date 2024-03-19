@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { HiArrowSmallRight, HiMiniXMark } from "react-icons/hi2";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { NavLink } from "react-router-dom";
@@ -7,6 +6,8 @@ import { NavLink } from "react-router-dom";
 import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 import ConfirmationModal from "../../ui/ConfirmationModal";
+import RemoveIcon from "../../ui/RemoveIcon";
+import ToPathIcon from "../../ui/ToPathIcon";
 
 import { Order } from "../../lib/types";
 import { capitalize } from "../../utils/capitalize";
@@ -28,11 +29,6 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const RemoveIcon = styled(HiMiniXMark)`
-  font-size: 2.4rem;
-  stroke-width: 1;
-`;
-
 const OrderLink = styled(NavLink)`
   text-decoration: none;
   background-color: var(--color-indigo-50);
@@ -42,11 +38,6 @@ const OrderLink = styled(NavLink)`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ToOrderIcon = styled(HiArrowSmallRight)`
-  font-size: 2.4rem;
-  stroke-width: 1;
 `;
 
 type Props = {
@@ -93,7 +84,7 @@ export default function TableRow({ nr, order, onOrderDelete }: Props) {
         <Wrapper>
           <Button variant="operation">
             <OrderLink to={`/orders/${id}`}>
-              <ToOrderIcon />
+              <ToPathIcon />
             </OrderLink>
           </Button>
         </Wrapper>

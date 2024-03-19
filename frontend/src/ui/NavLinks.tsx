@@ -4,6 +4,7 @@ import {
   HiHomeModern,
   HiMiniChartPie,
   HiMiniCog6Tooth,
+  HiMiniUsers,
 } from "react-icons/hi2";
 
 import NavLinkItem from "./NavLinkItem";
@@ -34,6 +35,10 @@ const OrdersIcon = styled(HiCheckCircle)`
   font-size: 2rem;
 `;
 
+const UsersIcon = styled(HiMiniUsers)`
+  font-size: 2rem;
+`;
+
 const SettingsIcon = styled(HiMiniCog6Tooth)`
   font-size: 2rem;
 `;
@@ -55,6 +60,11 @@ export default function NavLinks() {
         <NavLinkItem to="orders">
           <OrdersIcon />
           Orders
+        </NavLinkItem>
+
+        <NavLinkItem to="users">
+          <UsersIcon />
+          Users
         </NavLinkItem>
 
         <NavLinkItem to="settings">

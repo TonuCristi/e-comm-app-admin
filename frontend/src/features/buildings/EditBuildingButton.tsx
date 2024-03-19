@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import { HiMiniArrowSmallDown } from "react-icons/hi2";
 
 import Button from "../../ui/Button";
 import BuildingForm from "./BuildingForm";
+import UpdateIcon from "../../ui/UpdateIcon";
 
 import { BuildingRequest, BuildingWithoutId } from "../../lib/types";
 
@@ -16,11 +16,6 @@ type Props = {
 
 const StyledEditBuildingButton = styled.div``;
 
-const Icon = styled(HiMiniArrowSmallDown)`
-  font-size: 2.4rem;
-  stroke-width: 1;
-`;
-
 export default function EditBuildingButton({ id, onUpdate, building }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +26,7 @@ export default function EditBuildingButton({ id, onUpdate, building }: Props) {
   return (
     <StyledEditBuildingButton>
       <Button onClick={handleClick} variant="operation">
-        <Icon />
+        <UpdateIcon />
       </Button>
       {isOpen &&
         createPortal(

@@ -2,8 +2,7 @@ import styled, { css } from "styled-components";
 
 import { ReactNode } from "react";
 
-type Variant = "buildings" | "orders";
-
+type Variant = "buildings" | "orders" | "users";
 type Props = {
   children: ReactNode;
   variant: Variant;
@@ -20,6 +19,11 @@ const variants = {
     margin-bottom: 2.4rem;
   `,
   orders: css`
+    border: 3px solid var(--color-indigo-300);
+    border-radius: 1.1rem;
+    margin-bottom: 2.4rem;
+  `,
+  users: css`
     border: 3px solid var(--color-indigo-300);
     border-radius: 1.1rem;
     margin-bottom: 2.4rem;

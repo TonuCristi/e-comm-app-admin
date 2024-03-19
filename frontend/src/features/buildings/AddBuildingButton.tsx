@@ -34,7 +34,7 @@ export default function AddBuildingButton({ onBuildingAdd }: Props) {
       {isOpen &&
         createPortal(
           <BuildingForm
-            title="add"
+            title="Add"
             onClick={handleClick}
             onAdd={onBuildingAdd}
           />,

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { HiArrowSmallRight, HiMiniXMark } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -8,6 +7,8 @@ import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 import EditBuildingButton from "./EditBuildingButton";
 import ConfirmationModal from "../../ui/ConfirmationModal";
+import RemoveIcon from "../../ui/RemoveIcon";
+import ToPathIcon from "../../ui/ToPathIcon";
 
 import { Building, BuildingRequest } from "../../lib/types";
 import { capitalize } from "../../utils/capitalize";
@@ -29,11 +30,6 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const RemoveIcon = styled(HiMiniXMark)`
-  font-size: 2.4rem;
-  stroke-width: 1;
-`;
-
 const BuldingLink = styled(NavLink)`
   text-decoration: none;
   background-color: var(--color-indigo-50);
@@ -43,11 +39,6 @@ const BuldingLink = styled(NavLink)`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ToBuildingIcon = styled(HiArrowSmallRight)`
-  font-size: 2.4rem;
-  stroke-width: 1;
 `;
 
 const Discount = styled.div`
@@ -96,10 +87,6 @@ export default function TableRow({
         )}
       </Field>
 
-      {/* <Field>
-        {area} m<sup>2</sup>
-      </Field> */}
-
       <Field>{capitalize(location)}</Field>
 
       <Field>
@@ -131,7 +118,7 @@ export default function TableRow({
       <Field>
         <Wrapper>
           <BuldingLink to={`/buildings/${id}`}>
-            <ToBuildingIcon />
+            <ToPathIcon />
           </BuldingLink>
         </Wrapper>
       </Field>
