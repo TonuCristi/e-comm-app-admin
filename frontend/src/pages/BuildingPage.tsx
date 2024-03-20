@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
 import BuildingInfo from "../features/buildings/BuildingInfo";
+import LoaderWrapper from "../ui/LoaderWrapper";
+import Loader from "../ui/Loader";
 
 import { useBuilding } from "../hooks/useBuilding";
 
@@ -53,7 +55,12 @@ export default function BuildingPage() {
 
   const { createdAt, updatedAt, discount_value, available } = building;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 

@@ -3,11 +3,12 @@ import {
   HiCheckCircle,
   HiHomeModern,
   HiMiniChartPie,
-  HiMiniCog6Tooth,
   HiMiniUsers,
 } from "react-icons/hi2";
 
 import NavLinkItem from "./NavLinkItem";
+import { useContext } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const StyledNavLinks = styled.nav``;
 
@@ -39,11 +40,9 @@ const UsersIcon = styled(HiMiniUsers)`
   font-size: 2rem;
 `;
 
-const SettingsIcon = styled(HiMiniCog6Tooth)`
-  font-size: 2rem;
-`;
-
 export default function NavLinks() {
+  const { currentUser } = useContext(GlobalContext);
+
   return (
     <StyledNavLinks>
       <LinksList>
@@ -62,15 +61,12 @@ export default function NavLinks() {
           Orders
         </NavLinkItem>
 
-        <NavLinkItem to="users">
-          <UsersIcon />
-          Users
-        </NavLinkItem>
-
-        <NavLinkItem to="settings">
-          <SettingsIcon />
-          Settings
-        </NavLinkItem>
+        {currentUser.role === "admin" && (
+          <NavLinkItem to="users">
+            <UsersIcon />
+            Users
+          </NavLinkItem>
+        )}
       </LinksList>
     </StyledNavLinks>
   );

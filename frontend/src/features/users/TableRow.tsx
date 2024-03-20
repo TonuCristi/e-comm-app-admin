@@ -1,11 +1,14 @@
-import styled from "styled-components";
-import Field from "../../ui/Field";
 import { useState } from "react";
+import { createPortal } from "react-dom";
+import styled from "styled-components";
+
+import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 import ConfirmationModal from "../../ui/ConfirmationModal";
-import { createPortal } from "react-dom";
 import RemoveIcon from "../../ui/RemoveIcon";
 import UpdateIcon from "../../ui/UpdateIcon";
+
+import { User } from "../../lib/types";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -24,17 +27,25 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-export default function TableRow() {
+type Props = {
+  nr: number;
+  user: User;
+  onUserDelete: (id: string) => void;
+};
+
+export default function TableRow({ nr, user, onUserDelete }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { id, username, email, role, createdAt } = user;
 
   return (
     <StyledTableRow>
-      <Field>1</Field>
-      <Field>65df7faee0defbf577c1d2ac</Field>
-      <Field>Tonu Cristian</Field>
-      <Field>cristian@example.com</Field>
-      <Field>admin</Field>
-      <Field>10.10.2002</Field>
+      <Field>{nr}</Field>
+      <Field>{id}</Field>
+      <Field>{username}</Field>
+      <Field>{email}</Field>
+      <Field>{role}</Field>
+      <Field>{new Date(createdAt).toLocaleDateString()}</Field>
 
       <Field>
         <Wrapper>
@@ -43,7 +54,10 @@ export default function TableRow() {
           </Button>
           {isOpen &&
             createPortal(
-              <ConfirmationModal onClick={() => {}} setIsOpen={setIsOpen} />,
+              <ConfirmationModal
+                onClick={() => onUserDelete(id)}
+                setIsOpen={setIsOpen}
+              />,
               document.body
             )}
         </Wrapper>

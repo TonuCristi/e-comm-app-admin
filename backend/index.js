@@ -28,7 +28,7 @@ app.use("/buildings", buildingsRoute);
 
 app.use("/orders", ordersRoute);
 
-app.use("/", authRoute);
+app.use("/users", authRoute);
 
 mongoose
   .connect(process.env.MONGODB_URL)

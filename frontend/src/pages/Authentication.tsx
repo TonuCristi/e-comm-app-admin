@@ -5,10 +5,9 @@ import styled from "styled-components";
 import Button from "../ui/Button";
 import Message from "../ui/Message";
 
-import UserApi from "../api/AuthApi";
+import AuthApi from "../api/AuthApi";
 import { AuthContext } from "../context/AuthContext";
-import { UserRequestLogin, UserResponse } from "../lib/types";
-import { GlobalContext } from "../context/GlobalContext";
+import { UserRequestLogin } from "../lib/types";
 
 const StyledAuthenticaton = styled.div`
   height: 100vh;
@@ -75,29 +74,21 @@ export type Inputs = {
   username: string;
   email: string;
   password: string;
+  role: "admin";
 };
 
 export default function Authentication() {
-  const { isLoading, setIsLoading, error, setError, setCurrentUser } =
-    useContext(GlobalContext);
-  const { setToken } = useContext(AuthContext);
+  const { isLoading, setIsLoading, error, setError, setToken } =
+    useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const { register, handleSubmit, reset } = useForm<Inputs>();
 
-  const mapUser = ({ _id, ...user }: UserResponse) => ({
-    id: _id,
-    ...user,
-  });
-
   function handleSignupUser(data: Inputs) {
-    UserApi.signupUser({ ...data, role: "admin" })
+    AuthApi.signupUser({ ...data, role: "admin" })
       .then((res) => {
-        const user = mapUser(res);
+        localStorage.setItem("token", res);
 
-        setCurrentUser(user);
-        setToken(user.token);
-
-        localStorage.setItem("user", JSON.stringify(user));
+        setToken(res);
 
         setError("");
         reset();
@@ -111,14 +102,11 @@ export default function Authentication() {
 
   function handleLoginUser(user: UserRequestLogin) {
     setIsLoading(true);
-    UserApi.loginUser(user)
+    AuthApi.loginUser(user)
       .then((res) => {
-        const user = mapUser(res);
+        localStorage.setItem("token", res);
 
-        setCurrentUser(user);
-        setToken(user.token);
-
-        localStorage.setItem("user", JSON.stringify(user));
+        setToken(res);
 
         setError("");
         reset();
@@ -139,7 +127,6 @@ export default function Authentication() {
     <StyledAuthenticaton>
       <Container>
         <Title>{isLogin ? "Login" : "Register"}</Title>
-
         <AuthForm onSubmit={handleSubmit(onSubmit)}>
           {!isLogin && (
             <Input

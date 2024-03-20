@@ -10,7 +10,7 @@ export function useLogout() {
   const navigate = useNavigate();
 
   function logout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setToken("");
     setCurrentUser({
       username: "",

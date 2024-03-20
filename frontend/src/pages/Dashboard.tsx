@@ -10,6 +10,8 @@ import {
 
 import Card from "../features/dashboard/Card";
 import Chart from "../features/dashboard/Chart";
+import LoaderWrapper from "../ui/LoaderWrapper";
+import Loader from "../ui/Loader";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import { BuildingResponse, OrderResponse } from "../lib/types";
@@ -105,26 +107,25 @@ export default function Dashboard() {
     });
 
   useEffect(() => {
-    BuildingsApi.getBuildings()
-      .then((data) => {
-        const buildings = mapBuildings(data);
+    Promise.all([BuildingsApi.getBuildings(), OrdersApi.getOrders()])
+      .then((res) => {
+        const buildings = mapBuildings(res[0]);
+        const orders = mapOrders(res[1]);
         setBuildings(buildings);
-        setError("");
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setIsLoading(false));
+        setOrders(orders);
 
-    OrdersApi.getOrders()
-      .then((data) => {
-        const buildings = mapOrders(data);
-        setOrders(buildings);
         setError("");
       })
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, [setBuildings, setOrders, setError, setIsLoading]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 
@@ -146,7 +147,7 @@ export default function Dashboard() {
         <OrdersIcon />
       </Card>
 
-      <Card title="Total Users" data={5}>
+      <Card title="Total Customers" data={5}>
         <UsersIcon />
       </Card>
 

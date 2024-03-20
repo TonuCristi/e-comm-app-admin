@@ -11,6 +11,8 @@ import Input from "../ui/Input";
 import Search from "../ui/Search";
 import OrdersControls from "../features/orders/OrdersControls";
 import Filter from "../features/orders/Filter";
+import Loader from "../ui/Loader";
+import LoaderWrapper from "../ui/LoaderWrapper";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import OrdersApi from "../api/OrdersApi";
@@ -69,10 +71,16 @@ export default function Orders() {
     OrdersApi.deleteOrder(id).then((data) => {
       const orders = mapOrders(data);
       setOrders(orders);
+      setPageNr(0);
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 

@@ -1,3 +1,7 @@
+import styled from "styled-components";
+
+const StyledSettings = styled.div``;
+
 export default function Settings() {
-  return <div>Settings</div>;
+  return <StyledSettings>Settings</StyledSettings>;
 }

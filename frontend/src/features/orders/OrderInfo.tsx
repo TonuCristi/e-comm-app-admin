@@ -115,7 +115,7 @@ export default function OrderInfo({
   onOrderUpdate,
 }: Props) {
   const { buildingId, id: orderId, paid, createdAt, updatedAt } = order;
-  const { isLoading, error, building } = useBuilding(buildingId);
+  const { error, building } = useBuilding(buildingId);
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -134,8 +134,6 @@ export default function OrderInfo({
     original_price,
     discount_value,
   } = building;
-
-  if (isLoading) return <div>Loading...</div>;
 
   if (error) return <div>Something went wrong...</div>;
 

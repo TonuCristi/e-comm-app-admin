@@ -3,15 +3,14 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Buildings from "./pages/Buildings";
 import BuildingPage from "./pages/BuildingPage";
-import Settings from "./pages/Settings";
 import PageNotFound from "./pages/PageNotFound";
 import Orders from "./pages/Orders";
 import OrderPage from "./pages/OrderPage";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import Users from "./pages/Users";
+import Settings from "./pages/Settings";
 
 import GlobalStyles from "./styles/GlobalStyles";
-import BuildingsProvider from "./context/BuildingsContext";
 import AuthProvider from "./context/AuthContext";
 
 const router = createBrowserRouter([
@@ -55,10 +54,8 @@ const router = createBrowserRouter([
 function App() {
   return (
     <AuthProvider>
-      <BuildingsProvider>
-        <RouterProvider router={router} />
-        <GlobalStyles />
-      </BuildingsProvider>
+      <RouterProvider router={router} />
+      <GlobalStyles />
     </AuthProvider>
   );
 }

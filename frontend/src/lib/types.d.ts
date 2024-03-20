@@ -73,29 +73,33 @@ export type Order = {
 export type OrderWithoutId = Omit<Order, "id">;
 
 // ----- Users -----
-type Role = "admin" | "employee" | "customer";
+type Role = "admin" | "employee";
 
 export type UserResponse = {
   _id: string;
   username: string;
   email: string;
   role: Role;
-  token: string;
   createdAt: string;
 };
 
-export type UserRequest = Omid<UserResponse, "_id" | "createdAt" | "updatedAt">;
+export type UserRequest = Omit<UserResponse, "_id" | "createdAt">;
 
-export type UserRequestLogin = Omid<
+export type UserRequestLogin = Omit<
   UserResponse,
-  "_id" | "username" | "createdAt" | "updatedAt"
+  "_id" | "username" | "createdAt"
 >;
 
 export type User = {
+  id: string;
   username: string;
   email: string;
   role: Role;
   createdAt: string;
 };
 
-export type UserWithoutId = Omid<User, "id">;
+export type UserWithoutId = Omit<User, "id">;
+
+export type Token = {
+  token: string;
+};

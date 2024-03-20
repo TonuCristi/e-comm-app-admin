@@ -2,7 +2,8 @@ import { useContext, useEffect } from "react";
 
 import RootLayout from "./RootLayout";
 import Authentication from "../pages/Authentication";
-import GlobalContext from "../context/GlobalContext";
+import GlobalProvider from "../context/GlobalContext";
+import BuildingsProvider from "../context/BuildingsContext";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -17,9 +18,11 @@ export default function ProtectedRoute() {
   }, [navigate, location.pathname, token]);
 
   return token ? (
-    <GlobalContext>
-      <RootLayout />
-    </GlobalContext>
+    <GlobalProvider>
+      <BuildingsProvider>
+        <RootLayout />
+      </BuildingsProvider>
+    </GlobalProvider>
   ) : (
     <Authentication />
   );

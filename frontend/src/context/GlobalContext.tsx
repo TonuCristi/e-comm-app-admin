@@ -26,9 +26,10 @@ export const GlobalContext = createContext<GlobalContext>({
   error: "",
   setError: () => undefined,
   currentUser: {
+    id: "",
     username: "",
     email: "",
-    role: "customer",
+    role: "admin",
     createdAt: "",
   },
   setCurrentUser: () => undefined,
@@ -38,9 +39,10 @@ export default function GlobalProvider({ children }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [currentUser, setCurrentUser] = useState<User>({
+    id: "",
     username: "",
     email: "",
-    role: "customer",
+    role: "admin",
     createdAt: "",
   });
 

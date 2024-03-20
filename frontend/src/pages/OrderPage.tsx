@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
 import OrderInfo from "../features/orders/OrderInfo";
+import LoaderWrapper from "../ui/LoaderWrapper";
+import Loader from "../ui/Loader";
 
 import OrdersApi from "../api/OrdersApi";
 import {
@@ -73,7 +75,12 @@ export default function OrderPage() {
     BuildingsApi.updateBuilding(id, building);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 

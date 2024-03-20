@@ -11,6 +11,8 @@ import TableRow from "../features/buildings/TableRow";
 import BuildingsControls from "../features/buildings/BuildingsControls";
 import Input from "../ui/Input";
 import Search from "../ui/Search";
+import LoaderWrapper from "../ui/LoaderWrapper";
+import Loader from "../ui/Loader";
 
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
@@ -130,6 +132,7 @@ export default function Buildings() {
     BuildingsApi.deleteBuilding(id).then((data) => {
       const buildings = mapBuildings(data);
       setBuildings(buildings);
+      setPageNr(0);
     });
   };
 
@@ -147,7 +150,12 @@ export default function Buildings() {
     });
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 
