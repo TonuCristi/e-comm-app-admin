@@ -78,8 +78,14 @@ userSchema.statics.login = async function (loggedUser) {
 };
 
 // static change password method
-userSchema.statics.changePassword = async function (id, password) {
+userSchema.statics.changePassword = async function (
+  id,
+  password,
+  repeatPassword
+) {
   if (!password) throw new Error("Please enter a password!");
+
+  if (password !== repeatPassword) throw new Error("Passwords don't match!");
 
   if (!validator.isStrongPassword(password))
     throw new Error("Password not strong enough!");

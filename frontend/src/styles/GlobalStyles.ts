@@ -10,6 +10,7 @@ const GlobalStyles = createGlobalStyle`
         --color-indigo-400: #818cf8; 
         --color-indigo-500: #6366f1; 
         --color-indigo-700: #6d28d9; 
+        --color-indigo-800: #3730A3;
         --color-indigo-900: #312e81; 
         --color-indigo-950: #1e1b4b; 
         

@@ -6,6 +6,7 @@ import {
   UserRequestLogin,
   UserResponse,
 } from "../lib/types";
+import { ChangePass } from "../pages/Settings";
 
 const AuthApi = {
   signupUser(user: UserRequest) {
@@ -28,9 +29,9 @@ const AuthApi = {
       .get("/users")
       .then(({ data }: AxiosResponse<UserResponse[]>) => data);
   },
-  changePass(id: string) {
+  changePass(id: string, data: ChangePass) {
     return api
-      .post(`users/changePass/${id}`)
+      .put(`users/changePass/${id}`, { ...data })
       .then(({ data }: AxiosResponse<string>) => data);
   },
   deleteUser(id: string) {

@@ -72,7 +72,7 @@ router.put("/changePass/:id", async (req, res) => {
       return res.status(404).send({ error: "User not found!" });
     }
 
-    await User.changePassword(id, req.body.password);
+    await User.changePassword(id, req.body.password, req.body.repeatPassword);
 
     res.status(200).json({
       message: "Password changed!",

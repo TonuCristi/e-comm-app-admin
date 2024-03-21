@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import styled, { css } from "styled-components";
 
-type Variant = "regular" | "operation" | "auth";
+type Variant = "regular" | "operation" | "auth" | "dark";
 
 type Props = {
   children: ReactNode;
@@ -28,6 +28,23 @@ const variants = {
     &:hover {
       background-color: var(--color-indigo-100);
       color: var(--color-indigo-900);
+    }
+  `,
+  dark: css`
+    background-color: var(--color-indigo-700);
+    color: var(--color-indigo-50);
+    padding: 1rem 2.4rem;
+    border-radius: 0.7rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: var(--color-indigo-800);
+      color: var(--color-indigo-100);
     }
   `,
   operation: css`

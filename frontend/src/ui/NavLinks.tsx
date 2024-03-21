@@ -61,7 +61,7 @@ export default function NavLinks() {
           Orders
         </NavLinkItem>
 
-        {currentUser.role === "admin" && (
+        {currentUser.role !== "employee" && (
           <NavLinkItem to="users">
             <UsersIcon />
             Users
