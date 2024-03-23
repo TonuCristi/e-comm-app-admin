@@ -1,22 +1,22 @@
 import { useContext, useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
+import { FieldValues, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
 import Table from "../ui/Table";
 import TableHeader from "../ui/TableHeader";
 import TableRow from "../features/users/TableRow";
 import Loader from "../ui/Loader";
 import LoaderWrapper from "../ui/LoaderWrapper";
-import { GlobalContext } from "../context/GlobalContext";
-
-import { User, UserResponse } from "../lib/types";
-import AuthApi from "../api/AuthApi";
+import Filter from "../features/users/Filter";
 import Input from "../ui/Input";
 import Search from "../ui/Search";
-import { FieldValues, useForm } from "react-hook-form";
 import UsersControls from "../features/users/UsersControls";
-import Filter from "../features/users/Filter";
-import { useSearchParams } from "react-router-dom";
 import Pagination from "../ui/Pagination";
+
+import { User, UserRequest, UserResponse } from "../lib/types";
+import AuthApi from "../api/AuthApi";
+import { GlobalContext } from "../context/GlobalContext";
 
 const PER_PAGE = 9;
 
@@ -113,6 +113,15 @@ export default function Users() {
       .catch((err) => dispatch({ type: "fetchError", payload: err.message }));
   }
 
+  function handleUpdate(id: string, user: UserRequest) {
+    AuthApi.updateUser(id, user)
+      .then((res) => {
+        const users = mapUsers(res);
+        dispatch({ type: "fetchUsers", payload: users });
+      })
+      .catch((err) => dispatch({ type: "fetchError", payload: err.message }));
+  }
+
   if (isLoading)
     return (
       <LoaderWrapper>
@@ -148,6 +157,7 @@ export default function Users() {
               nr={i + 1 + pageNr * PER_PAGE}
               user={user}
               onUserDelete={handleDelete}
+              onUserUpdate={handleUpdate}
             />
           ))}
       </Table>

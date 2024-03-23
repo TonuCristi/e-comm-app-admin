@@ -39,6 +39,11 @@ const AuthApi = {
       .delete(`/users/${id}`)
       .then(({ data }: AxiosResponse<UserResponse[]>) => data);
   },
+  updateUser(id: string, user: UserRequest) {
+    return api
+      .put(`/users/${id}`, user)
+      .then(({ data }: AxiosResponse<UserResponse[]>) => data);
+  },
 };
 
 export default AuthApi;

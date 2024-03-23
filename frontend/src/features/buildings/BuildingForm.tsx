@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { HiMiniXMark } from "react-icons/hi2";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
+import CloseIcon from "../../ui/CloseIcon";
 
 import { BuildingRequest, BuildingWithoutId } from "../../lib/types";
 
@@ -117,7 +117,7 @@ const Title = styled.h2`
   text-transform: capitalize;
 `;
 
-const StyledAddBuildingForm = styled.form`
+const StyledBuildingForm = styled.form`
   border: 3px solid var(--color-indigo-50);
   background-color: var(--color-indigo-900);
   display: flex;
@@ -167,11 +167,6 @@ const Textarea = styled.textarea`
     color: var(--color-indigo-50);
     opacity: 0.5;
   }
-`;
-
-const CloseIcon = styled(HiMiniXMark)`
-  font-size: 2.4rem;
-  stroke-width: 1;
 `;
 
 const ButtonWrapper = styled.div`
@@ -258,7 +253,7 @@ export default function BuildingForm({
 
       <Wrapper>
         <Title>{title} building</Title>
-        <StyledAddBuildingForm onSubmit={handleSubmit(onSubmit)}>
+        <StyledBuildingForm onSubmit={handleSubmit(onSubmit)}>
           <Inputs>
             {inputsList.map(
               ({ type, field, placeholder, required, valueAsNumber }) => (
@@ -285,7 +280,7 @@ export default function BuildingForm({
             <label>Availability</label>
           </CheckBoxWrapper>
           <Button variant="regular">{title} building</Button>
-        </StyledAddBuildingForm>
+        </StyledBuildingForm>
       </Wrapper>
     </Overlay>
   );

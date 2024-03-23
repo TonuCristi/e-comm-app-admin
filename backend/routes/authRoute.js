@@ -87,7 +87,7 @@ router.get("/", async (req, res) => {
     const users = await User.find({}, "_id username email role createdAt");
 
     res.status(200).send(users);
-  } catch (error) {
+  } catch (err) {
     res.status(400).send({ error: err.message });
   }
 });
@@ -96,12 +96,30 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await User.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) return res.status(404).send({ error: "User not found!" });
 
     const users = await User.find({}, "_id username email role createdAt");
 
     res.status(200).send(users);
-  } catch (error) {
+  } catch (err) {
+    res.status(400).send({ error: err.message });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndUpdate(id, req.body);
+
+    if (!user) return res.status(404).send({ error: "User not found!" });
+
+    const users = await User.find({}, "_id username email role createdAt");
+
+    res.status(200).send(users);
+  } catch (err) {
     res.status(400).send({ error: err.message });
   }
 });

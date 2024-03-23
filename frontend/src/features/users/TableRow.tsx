@@ -6,9 +6,9 @@ import Field from "../../ui/Field";
 import Button from "../../ui/Button";
 import ConfirmationModal from "../../ui/ConfirmationModal";
 import RemoveIcon from "../../ui/RemoveIcon";
-import UpdateIcon from "../../ui/UpdateIcon";
+import EditUserButton from "./EditUserButton";
 
-import { User } from "../../lib/types";
+import { User, UserRequest } from "../../lib/types";
 
 const StyledTableRow = styled.div`
   display: grid;
@@ -31,9 +31,15 @@ type Props = {
   nr: number;
   user: User;
   onUserDelete: (id: string) => void;
+  onUserUpdate: (id: string, user: UserRequest) => void;
 };
 
-export default function TableRow({ nr, user, onUserDelete }: Props) {
+export default function TableRow({
+  nr,
+  user,
+  onUserDelete,
+  onUserUpdate,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const { id, username, email, role, createdAt } = user;
@@ -64,28 +70,9 @@ export default function TableRow({ nr, user, onUserDelete }: Props) {
       </Field>
       <Field>
         <Wrapper>
-          <Button variant="operation">
-            <UpdateIcon />
-          </Button>
+          <EditUserButton />
         </Wrapper>
       </Field>
-
-      {/* <Field>
-        <Wrapper>
-          <EditBuildingButton
-            id={id}
-            onUpdate={onBuildingUpdate}
-            building={building}
-          />
-        </Wrapper>
-      </Field>
-      <Field>
-        <Wrapper>
-          <BuldingLink to={`/buildings/${id}`}>
-            <ToBuildingIcon />
-          </BuldingLink>
-        </Wrapper>
-      </Field> */}
     </StyledTableRow>
   );
 }
