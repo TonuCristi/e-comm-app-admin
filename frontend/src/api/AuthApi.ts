@@ -32,7 +32,7 @@ const AuthApi = {
   changePass(id: string, data: ChangePass) {
     return api
       .put(`users/changePass/${id}`, { ...data })
-      .then(({ data }: AxiosResponse<string>) => data);
+      .then(({ data }: AxiosResponse<{ message: string }>) => data);
   },
   deleteUser(id: string) {
     return api

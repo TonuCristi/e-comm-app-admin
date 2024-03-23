@@ -16,12 +16,6 @@ const sortTypes = [
   {
     "price-desc": "Price descending",
   },
-  {
-    "area-asc": "Area ascending",
-  },
-  {
-    "area-desc": "Area descending",
-  },
 ];
 
 const StyledBuildingsControls = styled.div`

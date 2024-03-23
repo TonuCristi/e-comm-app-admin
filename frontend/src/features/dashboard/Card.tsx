@@ -21,6 +21,10 @@ const Title = styled.h3`
   @media (max-width: 1535px) {
     font-size: 1.8rem;
   }
+
+  @media (max-width: 1279px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const Data = styled.p`

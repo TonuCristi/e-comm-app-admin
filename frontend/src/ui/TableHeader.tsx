@@ -21,7 +21,7 @@ const variants = {
     grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr 5fr 5fr;
   `,
   users: css`
-    grid-template-columns: 5fr 25fr 20fr 20fr 10fr 10fr 5fr 5fr;
+    grid-template-columns: 5fr 25fr 15fr 25fr 10fr 10fr 5fr 5fr;
   `,
 };
 

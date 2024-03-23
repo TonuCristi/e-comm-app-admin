@@ -21,7 +21,7 @@ type Props = {
 };
 
 export const GlobalContext = createContext<GlobalContext>({
-  isLoading: false,
+  isLoading: true,
   setIsLoading: () => undefined,
   error: "",
   setError: () => undefined,
@@ -36,7 +36,7 @@ export const GlobalContext = createContext<GlobalContext>({
 });
 
 export default function GlobalProvider({ children }: Props) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [currentUser, setCurrentUser] = useState<User>({
     id: "",

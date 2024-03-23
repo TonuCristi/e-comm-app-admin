@@ -40,13 +40,13 @@ export default function Orders() {
   const [searchParams] = useSearchParams();
 
   // Status filter
-  const statusFilterOrders =
+  const statusFilter =
     searchParams.get("status") !== "paid"
       ? orders.filter(({ paid }) => paid === false)
       : orders.filter(({ paid }) => paid);
 
   // Search
-  const allOrders = statusFilterOrders.filter((order) =>
+  const allOrders = statusFilter.filter((order) =>
     order.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
   );
 

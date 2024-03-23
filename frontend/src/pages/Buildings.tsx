@@ -60,7 +60,7 @@ export default function Buildings() {
   const [searchParams] = useSearchParams();
 
   // Type filter
-  const typeFilterBuildings = searchParams.get("type")
+  const typeFilter = searchParams.get("type")
     ? buildings.filter((building) => {
         return (
           building.type.toLowerCase() ===
@@ -70,7 +70,7 @@ export default function Buildings() {
     : buildings;
 
   // Location filter
-  const locationFilterBuildings = typeFilterBuildings.filter((building) => {
+  const locationFilter = typeFilter.filter((building) => {
     if (!searchParams.get("location")) return true;
     return (
       building.location.toLowerCase() ===
@@ -80,18 +80,10 @@ export default function Buildings() {
 
   // Sort
   const sortBuildings = !searchParams.get("sort")
-    ? locationFilterBuildings
-    : locationFilterBuildings.sort((a, b) => {
+    ? locationFilter
+    : locationFilter.sort((a, b) => {
         if (searchParams.get("sort") === "price-desc") {
           return b.selling_price - a.selling_price;
-        }
-
-        if (searchParams.get("sort") === "area-asc") {
-          return a.area - b.area;
-        }
-
-        if (searchParams.get("sort") === "area-desc") {
-          return b.area - a.area;
         }
 
         return a.selling_price - b.selling_price;
@@ -163,6 +155,7 @@ export default function Buildings() {
     <StyledBuildings>
       <BuildingsControls buildings={buildings}>
         <AddBuildingButton onBuildingAdd={handleAdd} />
+
         <InputWrapper>
           <Search reset={reset}>
             <Input

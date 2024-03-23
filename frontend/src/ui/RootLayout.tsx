@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Loader from "./Loader";
 
 import { GlobalContext } from "../context/GlobalContext";
 import AuthApi from "../api/AuthApi";
@@ -31,9 +32,23 @@ const Main = styled.main`
   width: 100%;
 `;
 
+const LoaderWrapper = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export default function RootLayout() {
-  const { setIsLoading, error, setError, currentUser, setCurrentUser } =
-    useContext(GlobalContext);
+  const {
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    currentUser,
+    setCurrentUser,
+  } = useContext(GlobalContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +61,6 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     AuthApi.getUser()
       .then((data) => {
         const user = mapUser(data);
@@ -65,6 +79,13 @@ export default function RootLayout() {
       navigate("/");
     }
   }, [currentUser.role, location, navigate]);
+
+  if (isLoading)
+    return (
+      <LoaderWrapper>
+        <Loader />
+      </LoaderWrapper>
+    );
 
   if (error) return <div>Something went wrong...</div>;
 

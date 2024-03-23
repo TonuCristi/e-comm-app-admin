@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 
 import Table from "../ui/Table";
@@ -10,10 +10,23 @@ import { GlobalContext } from "../context/GlobalContext";
 
 import { User, UserResponse } from "../lib/types";
 import AuthApi from "../api/AuthApi";
+import Input from "../ui/Input";
+import Search from "../ui/Search";
+import { FieldValues, useForm } from "react-hook-form";
+import UsersControls from "../features/users/UsersControls";
+import Filter from "../features/users/Filter";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "../ui/Pagination";
+
+const PER_PAGE = 9;
 
 const fields = ["Nr", "Id", "Username", "Email", "Role", "Joined", ""];
 
-const StyledUsers = styled.div``;
+const StyledUsers = styled.div`
+  @media (max-width: 1535px) {
+    font-size: 1.4rem;
+  }
+`;
 
 type State = {
   isLoading: boolean;
@@ -55,8 +68,25 @@ function usersReducer(state: State, action: Action) {
 export default function Users() {
   const { currentUser } = useContext(GlobalContext);
   const [state, dispatch] = useReducer(usersReducer, initialState);
+  const { register, reset, watch } = useForm<FieldValues>({
+    defaultValues: {
+      searchValue: "",
+    },
+  });
+  const [searchParams] = useSearchParams();
+  const [pageNr, setPageNr] = useState(0);
 
   const { isLoading, error, users } = state;
+
+  // Role filter
+  const roleFilter = searchParams.get("role")
+    ? users.filter((user) => user.role === searchParams.get("role"))
+    : users;
+
+  // Search
+  const allUsers = roleFilter.filter((user) =>
+    user.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
+  );
 
   const mapUsers = (users: UserResponse[]) => {
     return users.map((user: UserResponse) => {
@@ -94,19 +124,40 @@ export default function Users() {
 
   return (
     <StyledUsers>
+      <UsersControls>
+        <Search reset={reset}>
+          <Input
+            variant="search"
+            register={register}
+            placeholder="Search by id..."
+            searchField="searchValue"
+          />
+        </Search>
+
+        <Filter users={users} />
+      </UsersControls>
+
       <Table variant="users">
         <TableHeader variant="users" fields={fields} />
-        {users
+        {allUsers
           .filter((user) => user.id !== currentUser.id)
+          .slice(pageNr * PER_PAGE, (pageNr + 1) * PER_PAGE)
           .map((user, i) => (
             <TableRow
               key={user.id}
-              nr={i + 1}
+              nr={i + 1 + pageNr * PER_PAGE}
               user={user}
               onUserDelete={handleDelete}
             />
           ))}
       </Table>
+
+      <Pagination
+        pageNr={pageNr}
+        setPageNr={setPageNr}
+        dataPerPage={PER_PAGE}
+        dataCount={users.length}
+      />
     </StyledUsers>
   );
 }

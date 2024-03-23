@@ -12,7 +12,7 @@ import { User } from "../../lib/types";
 
 const StyledTableRow = styled.div`
   display: grid;
-  grid-template-columns: 5fr 25fr 20fr 20fr 10fr 10fr 5fr 5fr;
+  grid-template-columns: 5fr 25fr 15fr 25fr 10fr 10fr 5fr 5fr;
   border-bottom: 3px solid var(--color-indigo-300);
 
   &:last-child {

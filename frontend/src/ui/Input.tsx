@@ -54,6 +54,7 @@ export default function Input({
 }: Props) {
   return (
     <StyledInput
+      type="text"
       $variant={variant}
       placeholder={placeholder}
       {...register(searchField)}

@@ -76,7 +76,7 @@ export default function Filter({
           const [key, value] = Object.entries(type)[0];
           return (
             <option key={key} value={key}>
-              {value}
+              {capitalize(value)}
             </option>
           );
         })}
