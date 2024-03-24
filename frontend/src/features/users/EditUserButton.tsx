@@ -1,11 +1,18 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 
 import Button from "../../ui/Button";
 import UpdateIcon from "../../ui/UpdateIcon";
-import { createPortal } from "react-dom";
 import UsersForm from "./UsersForm";
 
-export default function EditUserButton() {
+import { User, UserRequest } from "../../lib/types";
+
+type Props = {
+  user: User;
+  onUserUpdate: (id: string, user: UserRequest) => void;
+};
+
+export default function EditUserButton({ user, onUserUpdate }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -13,7 +20,15 @@ export default function EditUserButton() {
       <Button variant="operation" onClick={() => setIsOpen(true)}>
         <UpdateIcon />
       </Button>
-      {isOpen && createPortal(<UsersForm />, document.body)}
+      {isOpen &&
+        createPortal(
+          <UsersForm
+            user={user}
+            onUserUpdate={onUserUpdate}
+            setIsOpen={setIsOpen}
+          />,
+          document.body
+        )}
     </>
   );
 }

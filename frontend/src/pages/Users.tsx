@@ -84,9 +84,11 @@ export default function Users() {
     : users;
 
   // Search
-  const allUsers = roleFilter.filter((user) =>
-    user.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
-  );
+  const allUsers = roleFilter
+    .filter((user) =>
+      user.id.toLowerCase().startsWith(watch("searchValue").toLowerCase())
+    )
+    .filter((user) => user.id !== currentUser.id);
 
   const mapUsers = (users: UserResponse[]) => {
     return users.map((user: UserResponse) => {
@@ -109,6 +111,7 @@ export default function Users() {
       .then((res) => {
         const users = mapUsers(res);
         dispatch({ type: "fetchUsers", payload: users });
+        setPageNr(0);
       })
       .catch((err) => dispatch({ type: "fetchError", payload: err.message }));
   }
@@ -146,15 +149,14 @@ export default function Users() {
         <Filter users={users} />
       </UsersControls>
 
-      <Table variant="users">
+      <Table>
         <TableHeader variant="users" fields={fields} />
         {allUsers
-          .filter((user) => user.id !== currentUser.id)
-          .slice(pageNr * PER_PAGE, (pageNr + 1) * PER_PAGE)
+          .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
           .map((user, i) => (
             <TableRow
               key={user.id}
-              nr={i + 1 + pageNr * PER_PAGE}
+              nr={pageNr * PER_PAGE + i + 1}
               user={user}
               onUserDelete={handleDelete}
               onUserUpdate={handleUpdate}
@@ -166,7 +168,7 @@ export default function Users() {
         pageNr={pageNr}
         setPageNr={setPageNr}
         dataPerPage={PER_PAGE}
-        dataCount={users.length}
+        dataCount={allUsers.length}
       />
     </StyledUsers>
   );

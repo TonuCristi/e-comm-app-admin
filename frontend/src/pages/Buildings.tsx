@@ -17,6 +17,7 @@ import Loader from "../ui/Loader";
 import { BuildingsContext } from "../context/BuildingsContext";
 import BuildingsApi from "../api/BuildingsApi";
 import { Building, BuildingResponse, BuildingRequest } from "../lib/types";
+import { GlobalContext } from "../context/GlobalContext";
 
 const PER_PAGE = 9;
 
@@ -26,7 +27,6 @@ const fields = [
   "Type",
   "Selling Price",
   "Discount",
-  // "Area",
   "Location",
   "",
 ];
@@ -58,6 +58,7 @@ export default function Buildings() {
     },
   });
   const [searchParams] = useSearchParams();
+  const { currentUser } = useContext(GlobalContext);
 
   // Type filter
   const typeFilter = searchParams.get("type")
@@ -179,8 +180,14 @@ export default function Buildings() {
         </CheckBoxWrapper>
       </BuildingsControls>
 
-      <Table variant="buildings">
-        <TableHeader variant="buildings" fields={fields} />
+      <Table>
+        <TableHeader
+          variant={
+            currentUser.role !== "employee" ? "buildings" : "buildingsEmployee"
+          }
+          fields={fields}
+          user={currentUser}
+        />
         {allBuildings
           .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
           .map((building: Building, i: number) => (
@@ -190,6 +197,7 @@ export default function Buildings() {
               building={building}
               onBuildingDelete={handleDelete}
               onBuildingUpdate={handleUpdate}
+              user={currentUser}
             />
           ))}
       </Table>

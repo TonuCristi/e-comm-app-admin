@@ -41,18 +41,19 @@ const ShowPassBtn = styled.div`
 `;
 
 type Props = {
+  type: string;
   register: UseFormRegister<ChangePass>;
   name: "password" | "repeatPassword";
   placeholder: string;
 };
 
-export default function Input({ register, name, placeholder }: Props) {
+export default function Input({ type, register, name, placeholder }: Props) {
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   return (
     <InputWrapper>
       <StyledInput
-        type={isHidden ? "password" : "text"}
+        type={isHidden ? "password" : type}
         placeholder={placeholder}
         {...register(name, { required: true })}
       />

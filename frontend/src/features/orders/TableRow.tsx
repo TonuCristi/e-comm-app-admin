@@ -9,12 +9,13 @@ import ConfirmationModal from "../../ui/ConfirmationModal";
 import RemoveIcon from "../../ui/RemoveIcon";
 import ToPathIcon from "../../ui/ToPathIcon";
 
-import { Order } from "../../lib/types";
+import { Order, Role, User } from "../../lib/types";
 import { capitalize } from "../../utils/capitalize";
 
-const StyledTabelRow = styled.div`
+const StyledTabelRow = styled.div<{ role: Role }>`
   display: grid;
-  grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr 5fr 5fr;
+  grid-template-columns: 5fr 30fr 13fr 14fr 15fr 13fr ${(props) =>
+      props.role !== "employee" ? "5fr 5fr" : "5fr"};
   border-bottom: 3px solid var(--color-indigo-300);
 
   &:last-child {
@@ -44,14 +45,15 @@ type Props = {
   nr: number;
   order: Order;
   onOrderDelete: (id: string) => void;
+  user: User;
 };
 
-export default function TableRow({ nr, order, onOrderDelete }: Props) {
+export default function TableRow({ nr, order, onOrderDelete, user }: Props) {
   const { id, type, location, selling_price, paid } = order;
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <StyledTabelRow>
+    <StyledTabelRow role={user.role}>
       <Field>{nr}</Field>
       <Field>{id}</Field>
       <Field>{capitalize(type)}</Field>
@@ -64,21 +66,23 @@ export default function TableRow({ nr, order, onOrderDelete }: Props) {
       </Field>
       <Field>{paid ? "paid" : "processing"}</Field>
 
-      <Field>
-        <Wrapper>
-          <Button variant="operation" onClick={() => setIsOpen(true)}>
-            <RemoveIcon />
-          </Button>
-          {isOpen &&
-            createPortal(
-              <ConfirmationModal
-                onClick={() => onOrderDelete(id)}
-                setIsOpen={setIsOpen}
-              />,
-              document.body
-            )}
-        </Wrapper>
-      </Field>
+      {user.role !== "employee" && (
+        <Field>
+          <Wrapper>
+            <Button variant="operation" onClick={() => setIsOpen(true)}>
+              <RemoveIcon />
+            </Button>
+            {isOpen &&
+              createPortal(
+                <ConfirmationModal
+                  onClick={() => onOrderDelete(id)}
+                  setIsOpen={setIsOpen}
+                />,
+                document.body
+              )}
+          </Wrapper>
+        </Field>
+      )}
 
       <Field>
         <Wrapper>

@@ -70,7 +70,7 @@ export default function TableRow({
       </Field>
       <Field>
         <Wrapper>
-          <EditUserButton />
+          <EditUserButton user={user} onUserUpdate={onUserUpdate} />
         </Wrapper>
       </Field>
     </StyledTableRow>

@@ -73,7 +73,7 @@ export type Order = {
 export type OrderWithoutId = Omit<Order, "id">;
 
 // ----- Users -----
-type Role = "admin" | "employee";
+export type Role = "admin" | "employee";
 
 export type UserResponse = {
   _id: string;

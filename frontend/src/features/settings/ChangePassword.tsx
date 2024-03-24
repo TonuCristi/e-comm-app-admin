@@ -71,8 +71,14 @@ export default function ChangePassword({
     <StyledChangePassword>
       <Title>Change password</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input register={register} name="password" placeholder="Password" />
         <Input
+          type="text"
+          register={register}
+          name="password"
+          placeholder="Password"
+        />
+        <Input
+          type="text"
           register={register}
           name="repeatPassword"
           placeholder="Repeat password"

@@ -17,6 +17,7 @@ import LoaderWrapper from "../ui/LoaderWrapper";
 import { BuildingsContext } from "../context/BuildingsContext";
 import OrdersApi from "../api/OrdersApi";
 import { OrderResponse } from "../lib/types";
+import { GlobalContext } from "../context/GlobalContext";
 
 const PER_PAGE = 9;
 
@@ -38,6 +39,7 @@ export default function Orders() {
     },
   });
   const [searchParams] = useSearchParams();
+  const { currentUser } = useContext(GlobalContext);
 
   // Status filter
   const statusFilter =
@@ -99,8 +101,13 @@ export default function Orders() {
         <Filter setPageNr={setPageNr} />
       </OrdersControls>
 
-      <Table variant="orders">
-        <TableHeader variant="orders" fields={fields} />
+      <Table>
+        <TableHeader
+          variant={
+            currentUser.role !== "employee" ? "orders" : "ordersEmployee"
+          }
+          fields={fields}
+        />
         {allOrders
           .slice(pageNr * PER_PAGE, PER_PAGE * (pageNr + 1))
           .map((order, i) => (
@@ -109,6 +116,7 @@ export default function Orders() {
               nr={pageNr * PER_PAGE + i + 1}
               order={order}
               onOrderDelete={handleDelete}
+              user={currentUser}
             />
           ))}
       </Table>
