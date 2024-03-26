@@ -13,9 +13,10 @@ export function useLogout() {
     localStorage.removeItem("token");
     setToken("");
     setCurrentUser({
+      id: "",
       username: "",
       email: "",
-      role: "customer",
+      role: "admin",
       createdAt: "",
     });
     navigate("/");
